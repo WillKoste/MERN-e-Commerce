@@ -10,8 +10,8 @@ const App = () => {
 		<div className='App'>
 			<Header />
 			<Navbar />
-			<h1>Ding Dong</h1>
-			<h2>Poo Pong</h2>
+			<h1 className='text-primary'>Ding Dong</h1>
+			<h2 className='text-secondary'>Poo Pong</h2>
 			<Footer />
 		</div>
 	);
