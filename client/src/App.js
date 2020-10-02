@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import './App.css';
+import {Container} from 'react-bootstrap';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
-import Navbar from './components/layout/Navbar';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
 const App = () => {
 	return (
-		<div className='App'>
+		<Fragment>
 			<Header />
-			<Navbar />
-			<h1 className='text-primary'>Ding Dong</h1>
-			<h2 className='text-secondary'>Poo Pong</h2>
+			<main className='py-3'>
+				<Container>
+					<h1>Default Text</h1>
+				</Container>
+			</main>
 			<Footer />
-		</div>
+		</Fragment>
 	);
 };
 
