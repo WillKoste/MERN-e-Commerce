@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import HomeScreen from './components/layout/HomeScreen';
+import ProductScreen from './components/products/ProductScreen';
 
 const App = () => {
 	return (
@@ -16,6 +17,7 @@ const App = () => {
 					<Container>
 						<Switch>
 							<Route exact path='/' component={HomeScreen} />
+							<Route path='/product/:id' component={ProductScreen} />
 						</Switch>
 					</Container>
 				</main>

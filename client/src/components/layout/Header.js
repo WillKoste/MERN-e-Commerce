@@ -6,14 +6,18 @@ const Header = () => {
 		<header>
 			<Navbar bg='dark' variant='dark' collapseOnSelect expand='lg' className='py-3'>
 				<Container>
-					<Navbar.Brand href='/'>E.E.E.E.</Navbar.Brand>
+					<Navbar.Brand style={{fontSize: '1.65rem'}} href='/'>
+						E.E.E.E.
+					</Navbar.Brand>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
 					<Navbar.Collapse id='basic-navbar-nav'>
 						<Nav className='ml-auto'>
-							<Nav.Link href='/cart'>
+							<Nav.Link href='/cart' style={{fontSize: '1rem', marginRight: '.65rem'}}>
 								<i className='fas fa-shopping-cart mr-1'></i> Cart
 							</Nav.Link>
-							<Nav.Link href='/login'>Sign In</Nav.Link>
+							<Nav.Link href='/login' style={{fontSize: '1rem'}}>
+								Sign In
+							</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
