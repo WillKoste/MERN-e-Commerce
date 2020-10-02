@@ -5,18 +5,23 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import HomeScreen from './components/layout/HomeScreen';
 
 const App = () => {
 	return (
-		<Fragment>
-			<Header />
-			<main className='py-3'>
-				<Container>
-					<h1>Default Text</h1>
-				</Container>
-			</main>
-			<Footer />
-		</Fragment>
+		<Router>
+			<Fragment>
+				<Header />
+				<main className='py-3'>
+					<Container>
+						<Switch>
+							<Route exact path='/' component={HomeScreen} />
+						</Switch>
+					</Container>
+				</main>
+				<Footer />
+			</Fragment>
+		</Router>
 	);
 };
 
