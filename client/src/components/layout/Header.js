@@ -7,19 +7,19 @@ const Header = () => {
 		<header>
 			<Navbar bg='dark' variant='dark' collapseOnSelect expand='lg' className='py-3'>
 				<Container>
-					<LinkContainer to='/'>
-						<Navbar.Brand style={{fontSize: '1.65rem'}}>E.E.E.E.</Navbar.Brand>
+					<LinkContainer to='/' style={{fontSize: '1.65rem'}}>
+						<Navbar.Brand>E.E.E.E.</Navbar.Brand>
 					</LinkContainer>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
 					<Navbar.Collapse id='basic-navbar-nav'>
 						<Nav className='ml-auto'>
-							<LinkContainer to='/cart'>
-								<Nav.Link style={{fontSize: '1rem', marginRight: '.65rem'}}>
+							<LinkContainer to='/cart' style={{fontSize: '1rem', marginRight: '.65rem'}}>
+								<Nav.Link>
 									<i className='fas fa-shopping-cart mr-1'></i> Cart
 								</Nav.Link>
 							</LinkContainer>
-							<LinkContainer to='/login'>
-								<Nav.Link style={{fontSize: '1rem'}}>Sign In</Nav.Link>
+							<LinkContainer to='/login' style={{fontSize: '1rem'}}>
+								<Nav.Link>Sign In</Nav.Link>
 							</LinkContainer>
 						</Nav>
 					</Navbar.Collapse>
