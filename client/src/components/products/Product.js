@@ -23,6 +23,7 @@ const Product = ({prod}) => {
 				</Card.Text>
 
 				<Card.Text as='h3'>${prod.price}</Card.Text>
+				{prod.countInStock === 0 && <span className='text-danger'>Out of stock</span>}
 			</Card.Body>
 		</Card>
 	);
