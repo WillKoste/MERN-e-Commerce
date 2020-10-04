@@ -3,6 +3,8 @@ const router = express.Router();
 const pool = require('../config/db');
 const {check, validationResult} = require('express-validator');
 
+const imageDefault = '/images/placeholder.png';
+
 router.get('/', async (req, res) => {
 	try {
 		const products = await pool.query(`SELECT * FROM products`);
@@ -39,9 +41,11 @@ router.post('/', [check('name', 'Product name is required').not().isEmpty(), che
 	const {name, image, description, brand, category, price, countinstock, rating, numreviews} = req.body;
 
 	try {
-		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [name, image, description, brand, category, price, countinstock, rating, numreviews]);
+		let spot = '1';
 
-		res.status(201).json({success: true, msg: 'Product has been added!'});
+		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, price, countinstock, rating, numreviews]);
+
+		res.status(201).json({success: true, msg: 'Product has been added!', product: product.rows});
 	} catch (err) {
 		console.error(err);
 		res.status(400).json({success: false, msg: 'Bad request, please try again'});
@@ -64,9 +68,9 @@ router.put('/:id', [check('name', 'Product name is required').not().isEmpty(), c
 			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
 		}
 
-		let updateProduct = await pool.query(`UPDATE products SET name = $1, image = $2, description = $3, brand = $4, category = $5, price = $6, countinstock = $7, rating = $8, numreviews = $9 WHERE id = ${req.params.id}`, [name, image, description, brand, category, price, countinstock, rating, numreviews]);
+		let updateProduct = await pool.query(`UPDATE products SET name = $1, image = $2, description = $3, brand = $4, category = $5, price = $6, countinstock = $7, rating = $8, numreviews = $9 WHERE id = ${req.params.id} RETURNING *`, [name, image, description, brand, category, price, countinstock, rating, numreviews]);
 
-		res.status(201).json({success: true, msg: 'Product has been updated', product: await pool.query(`SELECT * FROM products WHERE id = ${req.params.id}`)});
+		res.status(201).json({success: true, msg: 'Product has been updated', product: updateProduct.rows});
 	} catch (err) {
 		console.error(err);
 		res.status(400).json({success: false, msg: 'Bad request, please try again'});
