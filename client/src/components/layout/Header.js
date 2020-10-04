@@ -5,7 +5,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 const Header = () => {
 	return (
 		<header>
-			<Navbar bg='dark' variant='dark' collapseOnSelect expand='lg' className='py-3'>
+			<Navbar bg='primary' variant='dark' collapseOnSelect expand='lg' className='py-3'>
 				<Container>
 					<LinkContainer to='/' style={{fontSize: '1.65rem'}}>
 						<Navbar.Brand>E.E.E.E.</Navbar.Brand>

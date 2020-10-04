@@ -1,11 +1,24 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col, Image, ListGroup, Card, Button, ListGroupItem} from 'react-bootstrap';
 import Rating from './Rating';
 import products from '../../products';
+import axios from 'axios';
 
 const ProductScreen = ({match}) => {
-	const product = products.find((prod) => prod._id === match.params.id);
+	const [product, setProduct] = useState({});
+
+	useEffect(() => {
+		const fetchProject = async () => {
+			const res = await axios.get(`http://localhost:5004/api/product/${match.params.id}`);
+
+			setProduct(res.data.product);
+		};
+
+		fetchProject();
+	}, []);
+
+	// const product = products.find((prod) => prod.id === match.params.id);
 
 	return (
 		<Fragment>
@@ -14,7 +27,7 @@ const ProductScreen = ({match}) => {
 			</Link>
 			<Row>
 				<Col md={6}>
-					<Image src={product.image} alt={product.name} fluid />
+					<Image src={product.image} alt={product.name} fluid='true' />
 				</Col>
 				<Col md={3}>
 					<ListGroup variant='flush'>

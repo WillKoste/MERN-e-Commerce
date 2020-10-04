@@ -14,7 +14,7 @@ const App = () => {
 			<Fragment>
 				<Header />
 				<main className='py-3'>
-					<Container>
+					<Container className='p-4' style={{background: '#7BDFF7'}}>
 						<Switch>
 							<Route exact path='/' component={HomeScreen} />
 							<Route path='/product/:id' component={ProductScreen} />
