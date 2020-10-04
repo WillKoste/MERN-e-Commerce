@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col, Image, ListGroup, Card, Button, ListGroupItem} from 'react-bootstrap';
 import Rating from './Rating';
-import products from '../../products';
+import CurrencyFormat from 'react-currency-format';
 import axios from 'axios';
 
 const ProductScreen = ({match}) => {
@@ -10,7 +10,7 @@ const ProductScreen = ({match}) => {
 
 	useEffect(() => {
 		const fetchProject = async () => {
-			const res = await axios.get(`http://localhost:5004/api/product/${match.params.id}`);
+			const res = await axios.get(`/api/product/${match.params.id}`);
 
 			setProduct(res.data.product);
 		};
@@ -27,7 +27,7 @@ const ProductScreen = ({match}) => {
 			</Link>
 			<Row>
 				<Col md={6}>
-					<Image src={product.image} alt={product.name} fluid='true' />
+					<Image src={product.image} width={'100%'} alt={product.name} fluid='true' />
 				</Col>
 				<Col md={3}>
 					<ListGroup variant='flush'>
@@ -35,10 +35,10 @@ const ProductScreen = ({match}) => {
 							<h3>{product.name}</h3>
 						</ListGroupItem>
 						<ListGroupItem>
-							<Rating value={product.rating} text={`${product.numReviews} Reviews`} />
+							<Rating value={product.rating} text={`${product.numreviews} Reviews`} />
 						</ListGroupItem>
 						<ListGroupItem>
-							<strong>Price:</strong> ${product.price}
+							<strong>Price:</strong> ${<CurrencyFormat value={product.price} displayType={'text'} thousandSeparator={true} />}
 						</ListGroupItem>
 						<ListGroupItem>
 							<strong>Description:</strong> {product.description}
@@ -55,7 +55,7 @@ const ProductScreen = ({match}) => {
 								<Row>
 									<Col>Price:</Col>
 									<Col>
-										<strong>${product.price}</strong>
+										<strong>${<CurrencyFormat value={product.price} displayType={'text'} thousandSeparator={true} />}</strong>
 									</Col>
 								</Row>
 							</ListGroupItem>
@@ -70,11 +70,11 @@ const ProductScreen = ({match}) => {
 							<ListGroupItem>
 								<Row>
 									<Col>Product Status:</Col>
-									<Col>{product.countInStock === 0 ? `Item Unavailable` : product.countInStock > 0 && product.countInStock <= 5 ? `Limited availability` : 'Item in stock'}</Col>
+									<Col>{product.countinstock === 0 ? <span className='text-danger'>Item Unavailable</span> : product.countinstock > 0 && product.countinstock <= 5 ? <span style={{color: '#CDB800'}}>Limited availability</span> : <span style={{color: '#18BE01'}}>Item in stock</span>}</Col>
 								</Row>
 							</ListGroupItem>
 							<ListGroupItem>
-								<Button disabled={product.countInStock === 0 ? true : false} className='btn btn-primary btn-block'>
+								<Button disabled={product.countinstock === 0 ? true : false} className='btn btn-primary btn-block'>
 									Add To Cart
 								</Button>
 								<Button className='btn btn-success btn-block'>Buy Now</Button>

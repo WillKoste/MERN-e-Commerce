@@ -2,12 +2,13 @@ import React from 'react';
 import {Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import Rating from './Rating';
+import CurrencyFormat from 'react-currency-format';
 
 const Product = ({prod}) => {
 	return (
 		<Card className='my-3 p-3 rounded' style={{height: '90%'}}>
 			<Link to={`/product/${prod.id}`}>
-				<Card.Img src={prod.image} style={{width: '221px', height: '176px'}} fluid='true' />
+				<Card.Img src={prod.image} fluid='true' />
 			</Link>
 			<Card.Body>
 				<Link to={`/product/${prod.id}`}>
@@ -22,8 +23,8 @@ const Product = ({prod}) => {
 					</div>
 				</Card.Text>
 
-				<Card.Text as='h3'>${prod.price}</Card.Text>
-				{prod.countinstock === 0 && <span className='text-danger'>Out of stock</span>}
+				<Card.Text as='h3'>${<CurrencyFormat value={prod.price} displayType={'text'} thousandSeparator={true} />}</Card.Text>
+				{prod.countinstock === 0 ? <span className='text-danger'>Item Unavailable</span> : prod.countinstock > 0 && prod.countinstock <= 5 ? <span style={{color: '#CDB800'}}>Limited availability</span> : <span style={{color: '#18BE01'}}>Item in stock</span>}
 			</Card.Body>
 		</Card>
 	);

@@ -8,7 +8,7 @@ const HomeScreen = () => {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			const res = await axios.get('http://localhost:5004/api/product');
+			const res = await axios.get('/api/product');
 
 			setProducts(res.data.products);
 		};
@@ -18,7 +18,7 @@ const HomeScreen = () => {
 
 	return (
 		<Fragment>
-			<h1>Latest Products</h1>
+			<h1 className='display-4 mb-4'>Latest Products</h1>
 			<Row>
 				{products.map((prod) => (
 					<Col key={prod.id} sm={12} md={6} lg={4} xl={3}>

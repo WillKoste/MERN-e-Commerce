@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-const Rating = ({value, text, prodKey, color = '#E8E064'}) => {
+const Rating = ({value, text, prodKey, color = '#FAF01C'}) => {
 	return (
 		<div className='rating'>
 			<span>
@@ -20,7 +20,7 @@ const Rating = ({value, text, prodKey, color = '#E8E064'}) => {
 			<span>
 				<i style={{color}} className={value >= 5 ? 'fas fa-star' : value >= 4.5 ? 'fas fa-star-half-alt' : 'far fa-star'}></i>
 			</span>
-			<Link to={`/reviews/${prodKey}`} className='ml-2'>
+			<Link to={`/reviews/${prodKey}`} className='ml-2 text-secondary'>
 				{text && text}{' '}
 			</Link>
 		</div>
