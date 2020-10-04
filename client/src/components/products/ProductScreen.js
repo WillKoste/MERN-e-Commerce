@@ -5,7 +5,7 @@ import Rating from './Rating';
 import products from '../../products';
 
 const ProductScreen = ({match}) => {
-	// const product = products.find((prod) => prod._id === match.params.id);
+	const product = products.find((prod) => prod._id === match.params.id);
 
 	return (
 		<Fragment>

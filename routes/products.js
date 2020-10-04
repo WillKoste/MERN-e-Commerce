@@ -5,6 +5,14 @@ const {check, validationResult} = require('express-validator');
 
 const imageDefault = '/images/placeholder.png';
 
+const checkDefaultNum = (term) => {
+	if (term === '' || term === null) {
+		return 0;
+	} else {
+		return term;
+	}
+};
+
 router.get('/', async (req, res) => {
 	try {
 		const products = await pool.query(`SELECT * FROM products`);
@@ -43,7 +51,7 @@ router.post('/', [check('name', 'Product name is required').not().isEmpty(), che
 	try {
 		let spot = '1';
 
-		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, price, countinstock, rating, numreviews]);
+		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, checkDefaultNum(price), checkDefaultNum(countinstock), checkDefaultNum(rating), checkDefaultNum(numreviews)]);
 
 		res.status(201).json({success: true, msg: 'Product has been added!', product: product.rows});
 	} catch (err) {
