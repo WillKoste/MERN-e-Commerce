@@ -13,8 +13,8 @@ const App = () => {
 		<Router>
 			<Fragment>
 				<Header />
-				<main className='py-3'>
-					<Container className='p-4' style={{background: '#81D5FF'}}>
+				<main className='py-3' style={{background: '#f4f4f4'}}>
+					<Container className='p-4 rounded' style={{background: '#84D6E3'}}>
 						<Switch>
 							<Route exact path='/' component={HomeScreen} />
 							<Route path='/product/:id' component={ProductScreen} />
