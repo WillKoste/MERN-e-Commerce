@@ -32,12 +32,12 @@ alter table products add column user_id int references users(id)
 
 
 
-alter table products
+alter table paymentresults 
 	add column created_at date
 	default now();
 
 
-alter table products 
+alter table paymentresults 
 	add column timestamp time
 	default current_time;
 
@@ -88,6 +88,9 @@ select * from USERS;
 
 
 
+alter table shippingaddresses add column id serial primary key;
+
+
 
 
 create table reviews (
@@ -100,4 +103,69 @@ create table reviews (
 	created_at date default now(),
 	timestamp time default current_time
 );
+
+
+
+
+create table paymentresults (
+	id serial primary key,
+	payment_id text,
+	status text,
+	update_time text,
+	email_address text
+);
+
+
+
+
+
+
+create table orders (
+	id serial primary key,
+	user_id int references users(id),
+	order_item_id int references orderitems(id),
+	shipping_address_id int references shippingaddresses(id),
+	payment_method text not null,
+	payment_result int references paymentresults(id),
+	tax_price float not null default 0.0,
+	shipping_price float not null default 0.0,
+	total_price float not null default 0.0,
+	is_paid bool not null default false,
+	paid_date date,
+	is_delivered bool not null default false,
+	delivered_date date,
+	created_at date default now(),
+	timestamp time default current_time
+);
+
+
+
+create table shippingaddresses (
+	address text not null,
+	city text not null,
+	postal_code text not null,
+	country text not null
+);
+
+
+
+
+create table orderitems (
+	id serial primary key,
+	name text not null,
+	qty int not null,
+	image text not null,
+	price float not null,
+	product_id int references products(id)
+);
+
+
+
+
+
+
+
+
+
+
 
