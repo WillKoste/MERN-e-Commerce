@@ -8,7 +8,9 @@ create table products (
 	price float not null,
 	countInStock int not null,
 	rating float,
-	numReviews int
+	numReviews int,
+	created_at date default now(),
+	timestamp time default current_time
 )
 
 
@@ -60,7 +62,9 @@ create table users (
 	name text not null,
 	email text not null unique,
 	password text not null,
-	isAdmin bool default false not null
+	isAdmin bool default false not null,
+	created_at data default now(),
+	timestamp time default current_time
 );
 
 
