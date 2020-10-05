@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 		const product = await pool.query(`SELECT * FROM products WHERE id = ${req.params.id}`);
 
 		if (product.rows.length === 0) {
-			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
+			return res.status(404).json({success: false, msg: `No product found with the id of ${req.params.id}`});
 		}
 
 		res.json({success: true, product: product.rows[0]});
@@ -73,7 +73,7 @@ router.put('/:id', [check('name', 'Product name is required').not().isEmpty(), c
 		const product = await pool.query(`SELECT * FROM products WHERE id = ${req.params.id}`);
 
 		if (product.rows.length === 0) {
-			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
+			return res.status(404).json({success: false, msg: `No product found with the id of ${req.params.id}`});
 		}
 
 		let updateProduct = await pool.query(`UPDATE products SET name = $1, image = $2, description = $3, brand = $4, category = $5, price = $6, countinstock = $7, rating = $8, numreviews = $9 WHERE id = ${req.params.id} RETURNING *`, [name, image, description, brand, category, price, countinstock, rating, numreviews]);
@@ -90,7 +90,7 @@ router.delete('/:id', async (req, res) => {
 		const product = await pool.query(`SELECT * FROM products WHERE id = ${req.params.id}`);
 
 		if (product.rows.length === 0) {
-			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
+			return res.status(404).json({success: false, msg: `No product found with the id of ${req.params.id}`});
 		}
 
 		const deleteProduct = await pool.query(`DELETE FROM products WHERE id = ${req.params.id}`);
