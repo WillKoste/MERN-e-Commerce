@@ -49,8 +49,6 @@ router.post('/', [check('name', 'Product name is required').not().isEmpty(), che
 	const {name, image, description, brand, category, price, countinstock, rating, numreviews} = req.body;
 
 	try {
-		let spot = '1';
-
 		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, checkDefaultNum(price), checkDefaultNum(countinstock), checkDefaultNum(rating), checkDefaultNum(numreviews)]);
 
 		res.status(201).json({success: true, msg: 'Product has been added!', product: product.rows});
@@ -78,7 +76,7 @@ router.put('/:id', [check('name', 'Product name is required').not().isEmpty(), c
 
 		let updateProduct = await pool.query(`UPDATE products SET name = $1, image = $2, description = $3, brand = $4, category = $5, price = $6, countinstock = $7, rating = $8, numreviews = $9 WHERE id = ${req.params.id} RETURNING *`, [name, image, description, brand, category, price, countinstock, rating, numreviews]);
 
-		res.status(201).json({success: true, msg: 'Product has been updated', product: updateProduct.rows});
+		res.status(201).json({success: true, msg: 'Product has been updated', product: updateProduct.rows[0]});
 	} catch (err) {
 		console.error(err);
 		res.status(400).json({success: false, msg: 'Bad request, please try again'});
