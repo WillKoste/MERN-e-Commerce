@@ -16,7 +16,7 @@ const ProductScreen = ({match}) => {
 		};
 
 		fetchProject();
-	}, []);
+	}, [match.params.id]);
 
 	// const product = products.find((prod) => prod.id === match.params.id);
 
