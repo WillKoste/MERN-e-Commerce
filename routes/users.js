@@ -9,7 +9,7 @@ const authorizeRole = require('../middleware/authorizeRole');
 
 //  @ Route			POST /api/users
 //  @ Desc			Register a user
-//  @ Access		Public
+//  @ Access		Private
 router.post('/register', [check('name', 'Name is required').not().isEmpty(), check('email', 'Valid email address is required').isEmail(), check('password', 'Password is required, and must contain at least 6 characters').isLength({min: 6}), check('isadmin', 'Must specify admin status').not().isEmpty()], async (req, res) => {
 	const errors = validationResult(req);
 

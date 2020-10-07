@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 const {check, validationResult} = require('express-validator');
+const auth = require('../middleware/auth');
 
 const imageDefault = '/images/placeholder.png';
 
@@ -13,6 +14,9 @@ const checkDefaultNum = (term) => {
 	}
 };
 
+//  @ Route			GET /api/products
+//  @ Desc			Get all products
+//  @ Access		Public
 router.get('/', async (req, res) => {
 	try {
 		const products = await pool.query(`SELECT * FROM products`);
@@ -24,6 +28,9 @@ router.get('/', async (req, res) => {
 	}
 });
 
+//  @ Route			GET /api/products/:id
+//  @ Desc			Get product by id
+//  @ Access		Public
 router.get('/:id', async (req, res) => {
 	try {
 		const product = await pool.query(`SELECT * FROM products WHERE id = ${req.params.id}`);
@@ -39,7 +46,10 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.post('/', [check('name', 'Product name is required').not().isEmpty(), check('price', 'Product price is required').not().isEmpty(), check('countinstock', 'Must include the total inventory of the product being created').not().isEmpty()], async (req, res) => {
+//  @ Route			POST /api/products
+//  @ Desc			Create product
+//  @ Access		Private
+router.post('/', auth, [check('name', 'Product name is required').not().isEmpty(), check('price', 'Product price is required').not().isEmpty(), check('countinstock', 'Must include the total inventory of the product being created').not().isEmpty()], async (req, res) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -49,7 +59,7 @@ router.post('/', [check('name', 'Product name is required').not().isEmpty(), che
 	const {name, image, description, brand, category, price, countinstock, rating, numreviews} = req.body;
 
 	try {
-		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, checkDefaultNum(price), checkDefaultNum(countinstock), checkDefaultNum(rating), checkDefaultNum(numreviews)]);
+		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, checkDefaultNum(price), checkDefaultNum(countinstock), checkDefaultNum(rating), checkDefaultNum(numreviews), req.user.id]);
 
 		res.status(201).json({success: true, msg: 'Product has been added!', product: product.rows});
 	} catch (err) {
@@ -58,7 +68,10 @@ router.post('/', [check('name', 'Product name is required').not().isEmpty(), che
 	}
 });
 
-router.put('/:id', [check('name', 'Product name is required').not().isEmpty(), check('price', 'Product price is required').not().isEmpty(), check('countinstock', 'Must include the total inventory of the product being created').not().isEmpty()], async (req, res) => {
+//  @ Route			PUT /api/products/:id
+//  @ Desc			Update product by id
+//  @ Access		Private
+router.put('/:id', auth, [check('name', 'Product name is required').not().isEmpty(), check('price', 'Product price is required').not().isEmpty(), check('countinstock', 'Must include the total inventory of the product being created').not().isEmpty()], async (req, res) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -83,7 +96,10 @@ router.put('/:id', [check('name', 'Product name is required').not().isEmpty(), c
 	}
 });
 
-router.delete('/:id', async (req, res) => {
+//  @ Route			DELETE /api/products/:id
+//  @ Desc			Delete product by id
+//  @ Access		Private
+router.delete('/:id', auth, async (req, res) => {
 	try {
 		const product = await pool.query(`SELECT * FROM products WHERE id = ${req.params.id}`);
 
