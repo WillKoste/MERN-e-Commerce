@@ -9,7 +9,7 @@ const auth = require('../middleware/auth');
 //  @ Route			GET /api/users
 //  @ Desc			Get all users
 //  @ Access		Public
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 	try {
 		const users = await pool.query(`SELECT * FROM users`);
 
@@ -59,7 +59,7 @@ router.post('/register', [check('name', 'Name is required').not().isEmpty(), che
 			payload,
 			process.env.JWT_SECRET,
 			{
-				expiresIn: '1d'
+				expiresIn: 360000000
 			},
 			async (err, token) => {
 				if (err) {
@@ -101,7 +101,7 @@ router.post('/login', [check('email', 'Email is required').isEmail(), check('pas
 			return res.status(400).json({success: false, msg: `Invalid Credentials`});
 		}
 
-		let theUser = pool.query(`SELECT id FROM users WHERE email = $1`, [email]);
+		let theUser = await pool.query(`SELECT id FROM users WHERE email = $1`, [email]);
 
 		const payload = {
 			theUser: {
@@ -109,11 +109,13 @@ router.post('/login', [check('email', 'Email is required').isEmail(), check('pas
 			}
 		};
 
+		console.log(theUser);
+
 		jwt.sign(
 			payload,
 			process.env.JWT_SECRET,
 			{
-				expiresIn: '1d'
+				expiresIn: 360000000
 			},
 			(err, token) => {
 				if (err) {
