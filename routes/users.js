@@ -5,11 +5,12 @@ const {check, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
+const authorizeRole = require('../middleware/authorizeRole');
 
 //  @ Route			GET /api/users
 //  @ Desc			Get all users
 //  @ Access		Public
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, authorizeRole, async (req, res) => {
 	try {
 		const users = await pool.query(`SELECT * FROM users`);
 
@@ -21,7 +22,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 //  @ Route			POST /api/users
-//  @ Desc			Get all users
+//  @ Desc			Register a user
 //  @ Access		Public
 router.post('/register', [check('name', 'Name is required').not().isEmpty(), check('email', 'Valid email address is required').isEmail(), check('password', 'Password is required, and must contain at least 6 characters').isLength({min: 6}), check('isadmin', 'Must specify admin status').not().isEmpty()], async (req, res) => {
 	const errors = validationResult(req);
@@ -47,11 +48,11 @@ router.post('/register', [check('name', 'Name is required').not().isEmpty(), che
 
 		await pool.query(`UPDATE users set password = $1 where email = $2`, [hashedPassword, email]);
 
-		let theUser = pool.query(`SELECT id FROM users WHERE email = $1`, [email]);
+		let theUser = await pool.query(`SELECT id FROM users WHERE email = $1`, [email]);
 
 		const payload = {
 			theUser: {
-				id: theUser.id
+				id: theUser.rows[0].id
 			}
 		};
 
@@ -59,7 +60,7 @@ router.post('/register', [check('name', 'Name is required').not().isEmpty(), che
 			payload,
 			process.env.JWT_SECRET,
 			{
-				expiresIn: 360000000
+				expiresIn: process.env.JWT_EXPIRES_IN
 			},
 			async (err, token) => {
 				if (err) {
@@ -78,7 +79,7 @@ router.post('/register', [check('name', 'Name is required').not().isEmpty(), che
 });
 
 //  @ Route			POST /api/users
-//  @ Desc			Get all users
+//  @ Desc			Login user
 //  @ Access		Public
 router.post('/login', [check('email', 'Email is required').isEmail(), check('password', 'Valid password is required').isLength({min: 6})], async (req, res) => {
 	const errors = validationResult(req);
@@ -105,17 +106,15 @@ router.post('/login', [check('email', 'Email is required').isEmail(), check('pas
 
 		const payload = {
 			theUser: {
-				id: theUser.id
+				id: theUser.rows[0].id
 			}
 		};
-
-		console.log(theUser);
 
 		jwt.sign(
 			payload,
 			process.env.JWT_SECRET,
 			{
-				expiresIn: 360000000
+				expiresIn: process.env.JWT_EXPIRES_IN
 			},
 			(err, token) => {
 				if (err) {
