@@ -10,6 +10,7 @@ import Footer from './components/layout/Footer';
 import HomeScreen from './components/layout/HomeScreen';
 import ProductScreen from './components/products/ProductScreen';
 import CartScreen from './components/cart/CartScreen';
+import Login from './components/layout/Login';
 
 const App = () => {
 	return (
@@ -21,6 +22,7 @@ const App = () => {
 						<Container className='p-4 rounded' style={{background: '#84D6E3'}}>
 							<Switch>
 								<Route exact path='/' component={HomeScreen} />
+								<Route exact path='/login' component={Login} />
 								<Route path='/product/:id' component={ProductScreen} />
 								<Route path='/cart/:id' component={CartScreen} />
 								<Route path='/cart/' component={CartScreen} />
