@@ -8,7 +8,6 @@ import {getProducts} from '../../actions/products';
 
 const HomeScreen = ({getProducts, productRed: {products, loading}}) => {
 	useEffect(() => {
-		console.log('It rannnn');
 		getProducts();
 	}, [getProducts]);
 
