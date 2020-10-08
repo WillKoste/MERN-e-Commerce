@@ -12,7 +12,7 @@ export const getProducts = () => async (dispatch) => {
 	} catch (err) {
 		dispatch({
 			type: PRODUCT_LIST_ERROR,
-			payload: err
+			payload: err.response && err.response.data.msg ? err.response.data.message : err.message
 		});
 	}
 };
