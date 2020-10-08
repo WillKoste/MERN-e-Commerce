@@ -2,18 +2,32 @@ import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Row, Col, Image, ListGroup, Card, Button, ListGroupItem} from 'react-bootstrap';
+import {Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form} from 'react-bootstrap';
 import {getSingleProduct} from '../../actions/singlePoducts';
 import Rating from './Rating';
 import Spinner from '../layout/Spinner';
 import CurrencyFormat from 'react-currency-format';
 import axios from 'axios';
 
-const ProductScreen = ({match, getSingleProduct, singleProductRed: {product, loading}}) => {
+const ProductScreen = ({match, history, getSingleProduct, singleProductRed: {product, loading}}) => {
+	const [qty, setQty] = useState(0);
+
 	useEffect(() => {
 		getSingleProduct(match.params.id);
 		console.log(getSingleProduct(match.params.id));
 	}, [match.params.id, getSingleProduct]);
+
+	const onChange = (e) => {
+		setQty(e.target.value);
+	};
+
+	const onSubmitCart = (e) => {
+		history.push(`/cart/${match.params.id}?qty=${qty}`);
+	};
+
+	const onSubmitBuyNow = (e) => {
+		e.preventDefault();
+	};
 
 	return (
 		<Fragment>
@@ -71,11 +85,29 @@ const ProductScreen = ({match, getSingleProduct, singleProductRed: {product, loa
 										<Col>{product.countinstock === 0 ? <span className='text-danger'>Item Unavailable</span> : product.countinstock > 0 && product.countinstock <= 5 ? <span style={{color: '#CDB800'}}>Limited availability</span> : <span style={{color: '#18BE01'}}>Item in stock</span>}</Col>
 									</Row>
 								</ListGroupItem>
+								{product.countinstock > 0 && (
+									<ListGroupItem>
+										<Row>
+											<Col>Qty</Col>
+											<Col>
+												<Form.Control as='select' value={qty} onChange={onChange}>
+													{[...Array(product.countinstock).keys()].map((val) => (
+														<option key={val + 1} value={val + 1}>
+															{val + 1}{' '}
+														</option>
+													))}
+												</Form.Control>
+											</Col>
+										</Row>
+									</ListGroupItem>
+								)}
 								<ListGroupItem>
-									<Button disabled={product.countinstock === 0 ? true : false} className='btn btn-primary btn-block'>
+									<Button onClick={onSubmitCart} disabled={product.countinstock === 0 ? true : false} className='btn btn-primary btn-block'>
 										Add To Cart
 									</Button>
-									<Button className='btn btn-success btn-block'>Buy Now</Button>
+									<Button onClick={onSubmitBuyNow} disabled={product.countinstock === 0 ? true : false} className='btn btn-success btn-block'>
+										Buy Now
+									</Button>
 								</ListGroupItem>
 							</ListGroup>
 						</Card>
