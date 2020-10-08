@@ -24,8 +24,7 @@ const App = () => {
 								<Route exact path='/' component={HomeScreen} />
 								<Route exact path='/login' component={Login} />
 								<Route path='/product/:id' component={ProductScreen} />
-								<Route path='/cart/:id' component={CartScreen} />
-								<Route path='/cart/' component={CartScreen} />
+								<Route path='/cart/:id?' component={CartScreen} />
 							</Switch>
 						</Container>
 					</main>

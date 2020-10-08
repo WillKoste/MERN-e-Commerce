@@ -7,7 +7,6 @@ import {getSingleProduct} from '../../actions/singlePoducts';
 import Rating from './Rating';
 import Spinner from '../layout/Spinner';
 import CurrencyFormat from 'react-currency-format';
-import axios from 'axios';
 
 const ProductScreen = ({match, history, getSingleProduct, singleProductRed: {product, loading}}) => {
 	const [qty, setQty] = useState(0);
