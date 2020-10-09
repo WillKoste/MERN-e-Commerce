@@ -9,11 +9,10 @@ import Spinner from '../layout/Spinner';
 import CurrencyFormat from 'react-currency-format';
 
 const ProductScreen = ({match, history, getSingleProduct, singleProductRed: {product, loading}}) => {
-	const [qty, setQty] = useState(0);
+	const [qty, setQty] = useState(1);
 
 	useEffect(() => {
 		getSingleProduct(match.params.id);
-		console.log(getSingleProduct(match.params.id));
 	}, [match.params.id, getSingleProduct]);
 
 	const onChange = (e) => {
