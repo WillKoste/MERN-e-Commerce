@@ -2,9 +2,10 @@ import React, {useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {Row, Col, ListGroup, Image, Form, Button, Card, ListGroupItem} from 'react-bootstrap';
+import {Row, Col, ListGroup, Card, ListGroupItem, Button} from 'react-bootstrap';
 import {addCart} from '../../actions/cart';
 import CartItem from './CartItem';
+import CurrencyFormat from 'react-currency-format';
 
 const CartScreen = ({match, location, history, addCart, cart}) => {
 	const prodID = match.params.id;
@@ -37,8 +38,20 @@ const CartScreen = ({match, location, history, addCart, cart}) => {
 						</ListGroup>
 					)}
 				</Col>
-				<Col md={2}></Col>
-				<Col md={2}></Col>
+				<Col md={4}>
+					<Card>
+						<ListGroup variant='flush'>
+							<ListGroupItem>
+								<h2>Subtotal ({cartItems.reduce((a, b) => a + b.qty, 0)}) items</h2>${<CurrencyFormat thousandSeparator={true} displayType={'text'} value={cartItems.reduce((a, b) => a + b.qty * b.price, 0).toFixed(2)} />}
+							</ListGroupItem>
+							<ListGroupItem>
+								<Button type='button' className='btn btn-block' disabled={cartItems.length === 0}>
+									Check Out
+								</Button>
+							</ListGroupItem>
+						</ListGroup>
+					</Card>
+				</Col>
 			</Row>
 		</Fragment>
 	);

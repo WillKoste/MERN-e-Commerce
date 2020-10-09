@@ -2,7 +2,6 @@ import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR} from '../actions/types';
 
 const initialState = {
 	cartItems: [],
-	loading: true,
 	error: null
 };
 
@@ -29,8 +28,7 @@ export default function (state = initialState, action) {
 		case CART_REMOVE_ITEM:
 			return {
 				...state,
-				loading: false,
-				cartItems: payload
+				cartItems: state.cartItems.filter((item) => item.product !== payload)
 			};
 		case CART_ERROR:
 			return {
