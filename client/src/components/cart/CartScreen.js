@@ -14,7 +14,6 @@ const CartScreen = ({match, location, history, addCart, cart}) => {
 	const {cartItems} = cart;
 
 	useEffect(() => {
-		console.log(cart);
 		if (prodID) {
 			addCart(prodID, qtySearch);
 		}

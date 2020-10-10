@@ -30,18 +30,17 @@ export const addCart = (id, qty) => async (dispatch, getState) => {
 export const removeCart = (id) => async (dispatch) => {
 	try {
 		const res = await axios.get(`/api/product/${id}`);
-		console.log(res.data.product.id);
+		// console.log(res.data.product.id);
 
-		const allItems = JSON.parse(localStorage.getItem('cartItems'));
-		const theItem = allItems.find((el) => el.product == id);
+		let allItems = JSON.parse(localStorage.getItem('cartItems'));
 		const theIndex = allItems.findIndex((el) => el.product == id);
 
-		const theGoods = allItems[theIndex];
+		allItems.splice(theIndex, 1)
 
 		console.log(allItems);
-		console.log(theItem);
-		console.log(theIndex);
-		console.error(theGoods);
+
+		localStorage.removeItem('cartItems')
+		localStorage.setItem('cartItems', JSON.stringify(allItems))
 
 		dispatch({
 			type: CART_REMOVE_ITEM,
