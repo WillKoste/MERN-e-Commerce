@@ -5,3 +5,6 @@ export const SINGLE_PRODUCT_FAIL = 'SINGLE_PRODUCT_FAIL';
 export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
 export const CART_ERROR = 'CART_ERROR';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';

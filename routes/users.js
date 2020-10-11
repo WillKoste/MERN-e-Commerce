@@ -54,7 +54,7 @@ router.post('/register', [check('name', 'Name is required').not().isEmpty(), che
 					console.error(err);
 					res.status(400).json({success: false, msg: 'Contact site administrator'});
 				} else {
-					res.json({token});
+					res.status(201).json({token});
 				}
 			}
 		);
@@ -124,7 +124,7 @@ router.post('/login', [check('email', 'Email is required').isEmail(), check('pas
 //  @ Access		Private
 router.get('/', auth, authorizeRole, async (req, res) => {
 	try {
-		const users = await pool.query(`SELECT * FROM users`);
+		const users = await pool.query(`SELECT id, name, email, isadmin, created_at, timestamp FROM users`);
 
 		res.json({success: true, count: users.rowCount, users: users.rows});
 	} catch (err) {
@@ -138,7 +138,7 @@ router.get('/', auth, authorizeRole, async (req, res) => {
 //  @ Access		Private
 router.get('/:id', auth, authorizeRole, async (req, res) => {
 	try {
-		const user = await pool.query(`SELECT * FROM users WHERE id = ${req.params.id}`);
+		const user = await pool.query(`SELECT id, name, email, isadmin, created_at, timestamp FROM users WHERE id = ${req.params.id}`);
 
 		if (user.rows.length === 0) {
 			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
@@ -164,13 +164,13 @@ router.put('/:id', auth, authorizeRole, [check('name', 'Name is required').not()
 	const {name, email, isadmin} = req.body;
 
 	try {
-		const user = await pool.query(`SELECT * FROM users WHERE id = ${req.params.id}`);
+		const user = await pool.query(`SELECT id, name, email, isadmin, created_at, timestamp FROM users WHERE id = ${req.params.id}`);
 
 		if (user.rows.length === 0) {
 			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
 		}
 
-		let updateUser = await pool.query(`UPDATE users SET name = $1, email = $2, isadmin = $3 WHERE id = ${req.params.id} RETURNING *`, [name, email, isadmin]);
+		let updateUser = await pool.query(`UPDATE users SET name = $1, email = $2, isadmin = $3 WHERE id = ${req.params.id} RETURNING id, name, email, isadmin, created_at, timestamp`, [name, email, isadmin]);
 
 		res.json({success: true, msg: 'User updated successfully!', user: updateUser.rows[0]});
 	} catch (err) {
