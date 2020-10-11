@@ -16,8 +16,13 @@ const CartScreen = ({match, location, history, addCart, cart}) => {
 	useEffect(() => {
 		if (prodID) {
 			addCart(prodID, qtySearch);
+			history.push('/cart')
 		}
 	}, [addCart, prodID, qtySearch]);
+
+	const checkoutCart = () => {
+		history.push(`/login?redirect=shipping`)
+	}
 
 	return (
 		<Fragment>
@@ -44,7 +49,7 @@ const CartScreen = ({match, location, history, addCart, cart}) => {
 								<h2>Subtotal ({cartItems.reduce((a, b) => a + b.qty, 0)}) items</h2>${<CurrencyFormat thousandSeparator={true} displayType={'text'} value={cartItems.reduce((a, b) => a + b.qty * b.price, 0).toFixed(2)} />}
 							</ListGroupItem>
 							<ListGroupItem>
-								<Button type='button' className='btn btn-block' disabled={cartItems.length === 0}>
+								<Button type='button' className='btn btn-block' disabled={cartItems.length === 0} onClick={checkoutCart} >
 									Check Out
 								</Button>
 							</ListGroupItem>

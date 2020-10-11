@@ -11,7 +11,6 @@ const CartItem = ({product, addCart, removeCart}) => {
 	};
 
 	const removeFromCart = (e) => {
-		// console.log(product);
 		removeCart(product.product);
 	};
 
