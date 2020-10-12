@@ -74,3 +74,7 @@ export const register = (email, password, name) => async (dispatch) => {
 		});
 	}
 };
+
+export const logout = () => async (dispatch) => {
+	dispatch({type: LOGOUT_SUCCESS});
+};

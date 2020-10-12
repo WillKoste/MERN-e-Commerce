@@ -1,8 +1,15 @@
 import React from 'react';
-import {Nav, Navbar, Container} from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {Nav, Navbar, Container, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
+import {logout} from '../../actions/user';
 
-const Header = () => {
+const Header = ({user: {isAuthenticated, loading, userInfo}, logout}) => {
+	const onClick = () => {
+		logout();
+	};
+
 	return (
 		<header>
 			<Navbar bg='primary' variant='dark' collapseOnSelect expand='lg' className='py-3'>
@@ -18,9 +25,18 @@ const Header = () => {
 									<i className='fas fa-shopping-cart mr-1'></i> Cart
 								</Nav.Link>
 							</LinkContainer>
-							<LinkContainer to='/login' style={{fontSize: '1rem'}}>
-								<Nav.Link>Login</Nav.Link>
-							</LinkContainer>
+							{isAuthenticated && userInfo ? (
+								<NavDropdown title={userInfo.name} id='username'>
+									<LinkContainer to='/profile'>
+										<NavDropdown.Item>Profile</NavDropdown.Item>
+									</LinkContainer>
+									<NavDropdown.Item onClick={onClick}>Logout</NavDropdown.Item>
+								</NavDropdown>
+							) : (
+								<LinkContainer to='/login' style={{fontSize: '1rem'}}>
+									<Nav.Link>Login</Nav.Link>
+								</LinkContainer>
+							)}
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
@@ -29,4 +45,13 @@ const Header = () => {
 	);
 };
 
-export default Header;
+Header.propTypes = {
+	user: PropTypes.object.isRequired,
+	logout: PropTypes.func.isRequired
+};
+
+const mapStateToProps = (state) => ({
+	user: state.user
+});
+
+export default connect(mapStateToProps, {logout})(Header);
