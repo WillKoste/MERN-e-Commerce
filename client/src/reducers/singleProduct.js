@@ -1,9 +1,8 @@
 import {SINGLE_PRODUCT_SUCCESS, SINGLE_PRODUCT_FAIL} from '../actions/types';
 
 const initialState = {
-	product: {
-		reviews: []
-	},
+	product: {},
+	reviews: [],
 	loading: true,
 	error: null
 };

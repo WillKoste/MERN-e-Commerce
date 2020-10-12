@@ -19,7 +19,7 @@ const Header = () => {
 								</Nav.Link>
 							</LinkContainer>
 							<LinkContainer to='/login' style={{fontSize: '1rem'}}>
-								<Nav.Link>Sign In</Nav.Link>
+								<Nav.Link>Login</Nav.Link>
 							</LinkContainer>
 						</Nav>
 					</Navbar.Collapse>

@@ -1,9 +1,6 @@
 import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR} from '../actions/types';
 
-const initialState = {
-	cartItems: [],
-	error: null
-};
+const initialState = {};
 
 export default function (state = initialState, action) {
 	const {type, payload} = action;

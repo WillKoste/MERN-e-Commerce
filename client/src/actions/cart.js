@@ -33,12 +33,12 @@ export const removeCart = (id) => async (dispatch, getState) => {
 		// console.log(res.data.product.id);
 
 		let allItems = JSON.parse(localStorage.getItem('cartItems'));
-		const theIndex = allItems.findIndex((el) => el.product == id);
+		const theIndex = allItems.findIndex((el) => el.product === id);
 
-		allItems.splice(theIndex, 1)
+		allItems.splice(theIndex, 1);
 
-		localStorage.removeItem('cartItems')
-		localStorage.setItem('cartItems', JSON.stringify(allItems))
+		localStorage.removeItem('cartItems');
+		localStorage.setItem('cartItems', JSON.stringify(allItems));
 
 		dispatch({
 			type: CART_REMOVE_ITEM,

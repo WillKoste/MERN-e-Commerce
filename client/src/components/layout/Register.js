@@ -1,65 +1,65 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {Link, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Spinner from './Spinner';
-import {login} from '../../actions/user';
+import {register} from '../../actions/user';
 import FormContainer from './FormContainer';
 import {Form, FormGroup, Button, Row, Col, FormLabel, FormControl, FormText} from 'react-bootstrap';
 
-const Login = ({login, user: {isAuthenticated, loading, error}}) => {
+const Register = ({register, user}) => {
 	const [formData, setFormData] = useState({
+		name: '',
 		email: '',
 		password: ''
 	});
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		login(formData.email, formData.password);
 	};
 
 	const onChange = (e) => {
 		setFormData({...formData, [e.target.name]: e.target.value});
 	};
 
-	if (isAuthenticated) {
-		return <Redirect to='/' />;
-	}
-
 	return (
 		<FormContainer>
-			<h1>Sign In</h1>
+			<h1>Register Your Account</h1>
 			<Form onSubmit={onSubmit}>
+				<FormGroup controlId='name'>
+					<FormLabel>Name</FormLabel>
+					<FormControl required type='text' onChange={onChange} name='name' value={formData.name} />
+				</FormGroup>
 				<FormGroup controlId='email'>
 					<FormLabel>Email Address</FormLabel>
-					<FormControl type='text' onChange={onChange} required name='email' value={formData.email} />
+					<FormControl required type='text' onChange={onChange} name='email' value={formData.email} />
 				</FormGroup>
 				<FormGroup controlId='password'>
 					<FormLabel>Password</FormLabel>
-					<FormControl type='password' minLength={6} onChange={onChange} name='password' value={formData.password} />
+					<FormControl required minLength={6} type='password' onChange={onChange} name='password' value={formData.password} />
 				</FormGroup>
 				<Button type='submit' variant='primary' className='btn btn-block mt-4'>
-					Sign In
+					Register
 				</Button>
 			</Form>
 			<FormText className='mt-2'>
-				Don't have an account? Click here to
-				<Link className='text-danger' to='/register'>
+				Already have an account? Click here to
+				<Link className='text-danger' to='/login'>
 					{' '}
-					Register!
+					Login!
 				</Link>
 			</FormText>
 		</FormContainer>
 	);
 };
 
-Login.propTypes = {
+Register.propTypes = {
 	user: PropTypes.object.isRequired,
-	login: PropTypes.func.isRequired
+	register: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
 	user: state.user
 });
 
-export default connect(mapStateToProps, {login})(Login);
+export default connect(mapStateToProps)(Register);

@@ -7,6 +7,20 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const authorizeRole = require('../middleware/authorizeRole');
 
+//  @ Route			GET /api/users/me
+//  @ Desc			GET LOGGED IN USER
+//  @ Access		Private
+router.get('/me', auth, async (req, res) => {
+	try {
+		const user = await pool.query(`SELECT id, name, email, isadmin, created_at, timestamp FROM users WHERE id = ${req.user.id}`);
+
+		res.json(user.rows[0]);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Server Error');
+	}
+});
+
 //  @ Route			POST /api/users
 //  @ Desc			Register a user
 //  @ Access		Private
