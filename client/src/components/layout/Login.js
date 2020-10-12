@@ -13,9 +13,11 @@ const Login = ({login, user: {isAuthenticated, loading, error}}) => {
 		password: ''
 	});
 
+	const {email, password} = formData;
+
 	const onSubmit = (e) => {
 		e.preventDefault();
-		login(formData.email, formData.password);
+		login(email, password);
 	};
 
 	const onChange = (e) => {
@@ -32,11 +34,11 @@ const Login = ({login, user: {isAuthenticated, loading, error}}) => {
 			<Form onSubmit={onSubmit}>
 				<FormGroup controlId='email'>
 					<FormLabel>Email Address</FormLabel>
-					<FormControl type='text' onChange={onChange} required name='email' value={formData.email} />
+					<FormControl type='text' onChange={onChange} required name='email' value={email} />
 				</FormGroup>
 				<FormGroup controlId='password'>
 					<FormLabel>Password</FormLabel>
-					<FormControl type='password' minLength={6} onChange={onChange} name='password' value={formData.password} />
+					<FormControl type='password' minLength={6} onChange={onChange} name='password' value={password} />
 				</FormGroup>
 				<Button type='submit' variant='primary' className='btn btn-block mt-4'>
 					Sign In

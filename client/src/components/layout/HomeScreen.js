@@ -6,10 +6,13 @@ import Spinner from './Spinner';
 import {connect} from 'react-redux';
 import {getProducts} from '../../actions/products';
 
-const HomeScreen = ({getProducts, productRed: {products, loading}}) => {
+const HomeScreen = ({getProducts, productRed: {products, loading}, user, history}) => {
 	useEffect(() => {
 		getProducts();
-	}, [getProducts]);
+		if (!user.isAuthenticated) {
+			history.push('/login');
+		}
+	}, [getProducts, user.isAuthenticated]);
 
 	return (
 		<Fragment>
@@ -35,7 +38,8 @@ HomeScreen.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	productRed: state.productRed
+	productRed: state.productRed,
+	user: state.user
 });
 
 export default connect(mapStateToProps, {getProducts})(HomeScreen);

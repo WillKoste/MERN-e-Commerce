@@ -20,11 +20,19 @@ const Header = ({user: {isAuthenticated, loading, userInfo}, logout}) => {
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
 					<Navbar.Collapse id='basic-navbar-nav'>
 						<Nav className='ml-auto'>
-							<LinkContainer to='/cart' style={{fontSize: '1rem', marginRight: '.65rem'}}>
-								<Nav.Link>
-									<i className='fas fa-shopping-cart mr-1'></i> Cart
-								</Nav.Link>
-							</LinkContainer>
+							{isAuthenticated ? (
+								<LinkContainer to='/cart' style={{fontSize: '1rem', marginRight: '.65rem'}}>
+									<Nav.Link>
+										<i className='fas fa-shopping-cart mr-1'></i> Cart
+									</Nav.Link>
+								</LinkContainer>
+							) : (
+								<LinkContainer to='/register' style={{fontSize: '1rem', marginRight: '.65rem'}}>
+									<Nav.Link>
+										<i className='fas fa-user-alt mr-1'></i> Register
+									</Nav.Link>
+								</LinkContainer>
+							)}
 							{isAuthenticated && userInfo ? (
 								<NavDropdown title={userInfo.name} id='username'>
 									<LinkContainer to='/profile'>
