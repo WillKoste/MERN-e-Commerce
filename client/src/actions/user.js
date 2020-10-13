@@ -88,8 +88,6 @@ export const updateProfile = (user) => async (dispatch) => {
 
 	const res = await axios.put(`/api/users/${user.id}`, user, config);
 
-	console.log(res.data, 123456789);
-
 	try {
 		dispatch({
 			type: UPDATE_PROFILE_SUCCESS,

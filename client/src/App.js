@@ -16,6 +16,7 @@ import CartScreen from './components/cart/CartScreen';
 import Login from './components/layout/Login';
 import Register from './components/layout/Register';
 import ProfileScreen from './components/profile/ProfileScreen';
+import ShippingScreen from './components/shipping/ShippingScreen';
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -40,6 +41,7 @@ const App = () => {
 								<Route path='/product/:id' component={ProductScreen} />
 								<Route path='/cart/:id?' component={CartScreen} />
 								<PrivateRoute path='/profile' component={ProfileScreen} />
+								<PrivateRoute path='/shipping' component={ShippingScreen} />
 							</Switch>
 						</Container>
 					</main>
