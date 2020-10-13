@@ -1,21 +1,52 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Form, Button} from 'react-bootstrap';
+import {Form, Button, FormGroup, FormControl, FormLabel} from 'react-bootstrap';
 import FormContainer from '../layout/FormContainer';
 
 const ShippingScreen = ({user, history}) => {
-	const [formDate, setFormData] = useState({
+	const [formData, setFormData] = useState({
 		address: '',
 		city: '',
 		zipcode: '',
 		country: ''
 	});
 
+	const {address, city, zipcode, country} = formData;
+
+	const onChange = (e) => {
+		setFormData({...formData, [e.target.name]: e.target.value});
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+	};
+
 	return (
-		<div>
-			<h1>I like to ship</h1>
-		</div>
+		<FormContainer>
+			<h1>Shipping</h1>
+			<Form onSubmit={onSubmit}>
+				<FormGroup controlId='address'>
+					<FormLabel>Address</FormLabel>
+					<FormControl type='text' name='address' required value={address} onChange={onChange} />
+				</FormGroup>
+				<FormGroup controlId='city'>
+					<FormLabel>City</FormLabel>
+					<FormControl type='text' name='city' required value={city} onChange={onChange} />
+				</FormGroup>
+				<FormGroup controlId='zipcode'>
+					<FormLabel>zipcode</FormLabel>
+					<FormControl type='text' name='zipcode' required value={zipcode} onChange={onChange} />
+				</FormGroup>
+				<FormGroup controlId='country'>
+					<FormLabel>country</FormLabel>
+					<FormControl type='text' name='country' required value={country} onChange={onChange} />
+				</FormGroup>
+				<Button className='py-2 mt-2' type='submit' variant='primary'>
+					Continue To Checkout
+				</Button>
+			</Form>
+		</FormContainer>
 	);
 };
 

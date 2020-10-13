@@ -24,7 +24,7 @@ const ProductScreen = ({match, history, getSingleProduct, singleProductRed: {pro
 	};
 
 	const onSubmitBuyNow = (e) => {
-		e.preventDefault();
+		history.push(`/shipping/${match.params.id}?qty=${qty}`);
 	};
 
 	return (

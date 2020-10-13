@@ -32,12 +32,6 @@ const ProfileScreen = ({user: {isAuthenticated, userInfo, updateSuccess}, update
 			isadmin: userInfo.isadmin,
 			created_at: userInfo.created_at
 		});
-
-		if (updateSuccess) {
-			alert('Update was successfull');
-		} else {
-			alert('Update was not successfull');
-		}
 	};
 
 	return (

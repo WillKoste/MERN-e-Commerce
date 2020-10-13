@@ -6,7 +6,7 @@ import {login} from '../../actions/user';
 import FormContainer from './FormContainer';
 import {Form, FormGroup, Button, FormLabel, FormControl, FormText} from 'react-bootstrap';
 
-const Login = ({login, user: {isAuthenticated, loading, error}}) => {
+const Login = ({login, user: {isAuthenticated}}) => {
 	const [formData, setFormData] = useState({
 		email: '',
 		password: ''

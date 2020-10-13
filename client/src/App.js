@@ -41,7 +41,7 @@ const App = () => {
 								<Route path='/product/:id' component={ProductScreen} />
 								<Route path='/cart/:id?' component={CartScreen} />
 								<PrivateRoute path='/profile' component={ProfileScreen} />
-								<PrivateRoute path='/shipping' component={ShippingScreen} />
+								<PrivateRoute path='/shipping/:id?' component={ShippingScreen} />
 							</Switch>
 						</Container>
 					</main>

@@ -1,6 +1,9 @@
-import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR} from '../actions/types';
+import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO} from '../actions/types';
 
-const initialState = {};
+const initialState = {
+	cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
+	shippingAddress: localStorage.getItem('shoppingItems') ? JSON.parse(localStorage.getItem('shoppingItems')) : {}
+};
 
 export default function (state = initialState, action) {
 	const {type, payload} = action;
@@ -27,10 +30,14 @@ export default function (state = initialState, action) {
 				...state,
 				cartItems: state.cartItems.filter((item) => item.product !== payload)
 			};
+		case SAVE_SHIPPING_INFO:
+			return {
+				...state,
+				shippingAddress: payload
+			};
 		case CART_ERROR:
 			return {
 				...state,
-				loading: false,
 				error: payload
 			};
 		default:

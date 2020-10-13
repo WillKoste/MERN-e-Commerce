@@ -1,4 +1,4 @@
-import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR} from './types';
+import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO} from './types';
 import axios from 'axios';
 
 export const addCart = (id, qty) => async (dispatch, getState) => {
@@ -50,4 +50,13 @@ export const removeCart = (id) => async (dispatch, getState) => {
 			payload: err.response && err.response.data.msg ? err.response.data.message : err.message
 		});
 	}
+};
+
+export const saveShippingInfo = (info) => async (dispatch) => {
+	dispatch({
+		type: SAVE_SHIPPING_INFO,
+		payload: info
+	});
+
+	localStorage.setItem('shippingInfo', JSON.stringify(info));
 };
