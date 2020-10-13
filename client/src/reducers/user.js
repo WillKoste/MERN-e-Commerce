@@ -1,11 +1,12 @@
-import {LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_ERROR, LOGOUT_SUCCESS, USER_LOADED, REGISTER_FAIL, REGISTER_SUCCESS} from '../actions/types';
+import {LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_ERROR, LOGOUT_SUCCESS, USER_LOADED, REGISTER_FAIL, REGISTER_SUCCESS, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL, UPDATE_PROFILE_RESET} from '../actions/types';
 
 const initialState = {
 	token: localStorage.getItem('token'),
 	isAuthenticated: null,
 	loading: true,
 	error: null,
-	userInfo: null
+	userInfo: null,
+	updateSuccess: null
 };
 
 export default function (state = initialState, action) {
@@ -39,6 +40,20 @@ export default function (state = initialState, action) {
 				isAuthenticated: false,
 				loading: false,
 				userInfo: null
+			};
+		case UPDATE_PROFILE_SUCCESS:
+			return {
+				...state,
+				userInfo: payload.user,
+				loading: false,
+				updateSuccess: true
+			};
+		case UPDATE_PROFILE_FAIL:
+			return {
+				...state,
+				loading: false,
+				error: payload,
+				updateSuccess: false
 			};
 		default:
 			return state;

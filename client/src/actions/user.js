@@ -1,4 +1,4 @@
-import {LOGOUT_SUCCESS, LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_ERROR, USER_LOADED, REGISTER_SUCCESS, REGISTER_FAIL} from './types';
+import {LOGOUT_SUCCESS, LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_ERROR, USER_LOADED, REGISTER_SUCCESS, REGISTER_FAIL, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL, UPDATE_PROFILE_RESET} from './types';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -77,4 +77,29 @@ export const register = (email, password, name, isadmin = false) => async (dispa
 
 export const logout = () => async (dispatch) => {
 	dispatch({type: LOGOUT_SUCCESS});
+};
+
+export const updateProfile = (user) => async (dispatch) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+
+	const res = await axios.put(`/api/users/${user.id}`, user, config);
+
+	console.log(res.data, 123456789);
+
+	try {
+		dispatch({
+			type: UPDATE_PROFILE_SUCCESS,
+			payload: res.data
+		});
+	} catch (err) {
+		console.error(err);
+		dispatch({
+			type: UPDATE_PROFILE_FAIL,
+			payload: err
+		});
+	}
 };

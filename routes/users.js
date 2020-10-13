@@ -153,6 +153,7 @@ router.get('/', auth, authorizeRole, async (req, res) => {
 router.get('/:id', auth, authorizeRole, async (req, res) => {
 	try {
 		const user = await pool.query(`SELECT id, name, email, isadmin, created_at, timestamp FROM users WHERE id = ${req.params.id}`);
+		console.log(user);
 
 		if (user.rows.length === 0) {
 			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
@@ -168,23 +169,23 @@ router.get('/:id', auth, authorizeRole, async (req, res) => {
 //  @ Route			PUT /api/users/:id
 //  @ Desc			Update user by id
 //  @ Access		Private
-router.put('/:id', auth, authorizeRole, [check('name', 'Name is required').not().isEmpty(), check('email').isEmail(), check('isadmin', "Must determine user's admin status").isBoolean()], async (req, res) => {
+router.put('/:id', auth, [check('name', 'Name is required').not().isEmpty(), check('email').isEmail()], async (req, res) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
 		return res.status(400).json({success: false, errors: errors.array()});
 	}
 
-	const {name, email, isadmin} = req.body;
+	const {name, email} = req.body;
 
 	try {
-		const user = await pool.query(`SELECT id, name, email, isadmin, created_at, timestamp FROM users WHERE id = ${req.params.id}`);
+		const user = await pool.query(`SELECT id, name, email, isadmin, created_at FROM users WHERE id = ${req.params.id}`);
 
 		if (user.rows.length === 0) {
 			return res.status(404).json({success: false, msg: `No user found with the id of ${req.params.id}`});
 		}
 
-		let updateUser = await pool.query(`UPDATE users SET name = $1, email = $2, isadmin = $3 WHERE id = ${req.params.id} RETURNING id, name, email, isadmin, created_at, timestamp`, [name, email, isadmin]);
+		let updateUser = await pool.query(`UPDATE users SET name = $1, email = $2 WHERE id = ${req.params.id} RETURNING id, name, email, isadmin, created_at`, [name, email]);
 
 		res.json({success: true, msg: 'User updated successfully!', user: updateUser.rows[0]});
 	} catch (err) {
