@@ -12,7 +12,7 @@ const authorizeRole = require('../middleware/authorizeRole');
 //  @ Access		Private
 router.get('/me', auth, async (req, res) => {
 	try {
-		const user = await pool.query(`SELECT id, name, email, created_at FROM users WHERE id = ${req.user.id}`);
+		const user = await pool.query(`SELECT id, name, email, isadmin, created_at FROM users WHERE id = ${req.user.id}`);
 
 		res.json(user.rows[0]);
 	} catch (err) {

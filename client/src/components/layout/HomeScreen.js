@@ -6,13 +6,10 @@ import Spinner from './Spinner';
 import {connect} from 'react-redux';
 import {getProducts} from '../../actions/products';
 
-const HomeScreen = ({getProducts, productRed: {products, loading}, user, history}) => {
+const HomeScreen = ({getProducts, productRed: {products, loading}}) => {
 	useEffect(() => {
 		getProducts();
-		if (!user.isAuthenticated) {
-			history.push('/login');
-		}
-	}, [getProducts, user.isAuthenticated]);
+	}, [getProducts]);
 
 	return (
 		<Fragment>

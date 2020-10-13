@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
-import Spinner from './Spinner';
 import {login} from '../../actions/user';
 import FormContainer from './FormContainer';
-import {Form, FormGroup, Button, Row, Col, FormLabel, FormControl, FormText} from 'react-bootstrap';
+import {Form, FormGroup, Button, FormLabel, FormControl, FormText} from 'react-bootstrap';
 
 const Login = ({login, user: {isAuthenticated, loading, error}}) => {
 	const [formData, setFormData] = useState({

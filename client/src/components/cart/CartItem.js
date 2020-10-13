@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Card, Image, Row, Col, ListGroupItem, Form, Button} from 'react-bootstrap';
+import {Image, Row, Col, ListGroupItem, Form, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {addCart, removeCart} from '../../actions/cart';
 

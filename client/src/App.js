@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import store from './store';
 import {loadUser} from './actions/user';
 import setAuthToken from './utils/setAuthToken';
+import PrivateRoute from './utils/PrivateRoute';
 
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -14,6 +15,7 @@ import ProductScreen from './components/products/ProductScreen';
 import CartScreen from './components/cart/CartScreen';
 import Login from './components/layout/Login';
 import Register from './components/layout/Register';
+import ProfileScreen from './components/profile/ProfileScreen';
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -37,6 +39,7 @@ const App = () => {
 								<Route exact path='/register' component={Register} />
 								<Route path='/product/:id' component={ProductScreen} />
 								<Route path='/cart/:id?' component={CartScreen} />
+								<PrivateRoute path='/profile' component={ProfileScreen} />
 							</Switch>
 						</Container>
 					</main>
