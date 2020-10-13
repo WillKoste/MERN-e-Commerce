@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Form, Button, FormGroup, FormControl, FormLabel} from 'react-bootstrap';
 import FormContainer from '../layout/FormContainer';
 
-const ShippingScreen = ({user, history}) => {
+const ShippingScreen = ({user, history, match, location}) => {
+	const prodID = match.params.id;
+	const qtySearch = location.search ? +location.search.split('=')[1] : 1;
+
 	const [formData, setFormData] = useState({
 		address: '',
 		city: '',
@@ -13,6 +16,12 @@ const ShippingScreen = ({user, history}) => {
 	});
 
 	const {address, city, zipcode, country} = formData;
+
+	useEffect(() => {
+		if (prodID) {
+			history.push('/shipping');
+		}
+	}, [prodID, history]);
 
 	const onChange = (e) => {
 		setFormData({...formData, [e.target.name]: e.target.value});
