@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Form, FormGroup, Button, Row, Col, FormLabel, FormControl, FormText} from 'react-bootstrap';
@@ -14,15 +14,31 @@ const ProfileScreen = ({user: {isAuthenticated, userInfo}}) => {
 
 	const {name, email, password, password2} = formData;
 
+	useEffect(() => {
+		if (isAuthenticated) {
+			setFormData({...formData, name: userInfo.name, email: userInfo.email});
+		}
+	}, []);
+
 	const onChange = (e) => {
 		setFormData({...formData, [e.target.name]: e.target.value});
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+
+		if (password !== password2) {
+			alert('Passwords do not match, please try again');
+		} else {
+			// DISPATCH UPDATE USER //
+		}
 	};
 
 	return (
 		<Row>
 			<Col md={3}>
 				<h2>User Profile</h2>
-				<Form>
+				<Form onSubmit={onSubmit}>
 					<FormGroup controlId='name'>
 						<FormLabel>Name</FormLabel>
 						<FormControl required type='text' onChange={onChange} name='name' value={name} />
@@ -40,7 +56,7 @@ const ProfileScreen = ({user: {isAuthenticated, userInfo}}) => {
 						<FormControl required minLength={6} type='password' onChange={onChange} name='password2' value={password2} />
 					</FormGroup>
 					<Button type='submit' variant='primary' className='btn btn-block mt-4'>
-						Register
+						Update
 					</Button>
 				</Form>
 			</Col>
