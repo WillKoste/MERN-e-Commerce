@@ -1,8 +1,9 @@
-import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO} from '../actions/types';
+import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO, SAVE_PAYMENT_INFO} from '../actions/types';
 
 const initialState = {
 	cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
-	shippingAddress: localStorage.getItem('shoppingItems') ? JSON.parse(localStorage.getItem('shoppingItems')) : {}
+	shippingAddress: localStorage.getItem('shippingInfo') ? JSON.parse(localStorage.getItem('shippingInfo')) : {},
+	paymentMethod: localStorage.getItem('paymentInfo') ? JSON.parse(localStorage.getItem('paymentInfo')) : {}
 };
 
 export default function (state = initialState, action) {
@@ -34,6 +35,11 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				shippingAddress: payload
+			};
+		case SAVE_PAYMENT_INFO:
+			return {
+				...state,
+				paymentMethod: payload
 			};
 		case CART_ERROR:
 			return {

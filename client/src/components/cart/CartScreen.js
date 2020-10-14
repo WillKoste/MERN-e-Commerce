@@ -13,8 +13,6 @@ const CartScreen = ({match, location, history, addCart, cart}) => {
 
 	const {cartItems} = cart;
 
-	console.log(cartItems);
-
 	useEffect(() => {
 		if (prodID) {
 			addCart(prodID, qtySearch);
@@ -23,7 +21,7 @@ const CartScreen = ({match, location, history, addCart, cart}) => {
 	}, [addCart, prodID, qtySearch, history]);
 
 	const checkoutCart = () => {
-		history.push(`/login?redirect=shipping`);
+		history.push(`/shipping`);
 	};
 
 	return (
