@@ -2,7 +2,7 @@ import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO} from '.
 
 const initialState = {
 	cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
-	shippingAddress: localStorage.getItem('shoppingItems') ? JSON.parse(localStorage.getItem('shoppingItems')) : {}
+	shippingAddress: localStorage.getItem('shippingInfo') ? JSON.parse(localStorage.getItem('shippingInfo')) : {}
 };
 
 export default function (state = initialState, action) {

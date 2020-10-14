@@ -6,7 +6,6 @@ import FormContainer from '../layout/FormContainer';
 
 const ShippingScreen = ({user, history, match, location}) => {
 	const prodID = match.params.id;
-	const qtySearch = location.search ? +location.search.split('=')[1] : 1;
 
 	const [formData, setFormData] = useState({
 		address: '',
