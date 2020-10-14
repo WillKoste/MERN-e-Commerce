@@ -50,7 +50,7 @@ const ProductScreen = ({match, history, getSingleProduct, singleProductRed: {pro
 							<ListGroupItem>
 								<strong>Price:</strong> ${<CurrencyFormat value={product.price} displayType={'text'} thousandSeparator={true} />}
 							</ListGroupItem>
-							<ListGroupItem>
+							<ListGroupItem className='text-dark'>
 								<strong>Description:</strong> {product.description}
 							</ListGroupItem>
 							<ListGroupItem>

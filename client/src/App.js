@@ -33,8 +33,8 @@ const App = () => {
 			<Router>
 				<Fragment>
 					<Header />
-					<main className='py-3' style={{background: '#f4f4f4'}}>
-						<Container className='p-4 rounded' style={{background: '#BACACB'}}>
+					<main className='py-3 bg-light'>
+						<Container className='p-4 rounded'>
 							<Switch>
 								<Route exact path='/' component={HomeScreen} />
 								<Route exact path='/login' component={Login} />

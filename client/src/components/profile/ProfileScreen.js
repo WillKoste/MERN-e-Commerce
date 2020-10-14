@@ -16,7 +16,8 @@ const ProfileScreen = ({user: {isAuthenticated, userInfo, updateSuccess}, update
 		if (isAuthenticated) {
 			setFormData({...formData, name: userInfo.name, email: userInfo.email});
 		}
-	}, [isAuthenticated, userInfo, formData]);
+		// eslint-disable-next-line
+	}, [isAuthenticated, userInfo]);
 
 	const onChange = (e) => {
 		setFormData({...formData, [e.target.name]: e.target.value});
