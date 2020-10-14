@@ -31,7 +31,6 @@ const ShippingScreen = ({cart: {shippingAddress}, history, match, saveShippingIn
 	const onSubmit = (e) => {
 		e.preventDefault();
 		saveShippingInfo({address, city, zipcode, country});
-		console.log(formData);
 		history.push('/payment');
 	};
 
@@ -49,11 +48,11 @@ const ShippingScreen = ({cart: {shippingAddress}, history, match, saveShippingIn
 					<FormControl type='text' name='city' required value={city} onChange={onChange} />
 				</FormGroup>
 				<FormGroup controlId='zipcode'>
-					<FormLabel>zipcode</FormLabel>
+					<FormLabel>Zipcode</FormLabel>
 					<FormControl type='text' name='zipcode' required value={zipcode} onChange={onChange} />
 				</FormGroup>
 				<FormGroup controlId='country'>
-					<FormLabel>country</FormLabel>
+					<FormLabel>Country</FormLabel>
 					<FormControl type='text' name='country' required value={country} onChange={onChange} />
 				</FormGroup>
 				<Button className='py-2 mt-2' type='submit' variant='primary'>

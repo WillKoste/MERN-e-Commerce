@@ -8,7 +8,7 @@ import CheckoutSteps from '../layout/CheckoutSteps';
 
 const ShippingScreen = ({history, savePaymentInfo}) => {
 	const [formData, setFormData] = useState({
-		paymentMethod: localStorage.shippingInfo || 'PayPal'
+		paymentMethod: ''
 	});
 
 	if (!localStorage.shippingInfo) {
@@ -35,13 +35,16 @@ const ShippingScreen = ({history, savePaymentInfo}) => {
 				<FormGroup controlId='paymentMethod'>
 					<FormLabel as='legend'>Select Method</FormLabel>
 					<Col className='mb-2 mt-3'>
-						<Form.Check type='radio' label='PayPal or CreditCard' name='paymentMethod' id='PayPal' value='PayPal' checked onChange={onChange}></Form.Check>
+						<Form.Check type='radio' label='PayPal or CreditCard' name='paymentMethod' id='PayPal' value='PayPal' onChange={onChange}></Form.Check>
 					</Col>
 					<Col className='mb-2'>
 						<Form.Check type='radio' label='Stripe' name='paymentMethod' id='Stripe' value='Stripe' onChange={onChange}></Form.Check>
 					</Col>
 					<Col className='mb-2'>
 						<Form.Check type='radio' label='Bitcoin' name='paymentMethod' id='Bitcoin' value='Bitcoin' onChange={onChange}></Form.Check>
+					</Col>
+					<Col className='mb-2'>
+						<Form.Check type='radio' label='WesternUnion' name='paymentMethod' id='WesternUnion' value='WesternUnion' onChange={onChange}></Form.Check>
 					</Col>
 				</FormGroup>
 				<Button className='py-2 mt-2' type='submit' variant='primary'>
