@@ -16,7 +16,7 @@ const ProfileScreen = ({user: {isAuthenticated, userInfo, updateSuccess}, update
 		if (isAuthenticated) {
 			setFormData({...formData, name: userInfo.name, email: userInfo.email});
 		}
-	}, [isAuthenticated, userInfo]);
+	}, [isAuthenticated, userInfo, formData]);
 
 	const onChange = (e) => {
 		setFormData({...formData, [e.target.name]: e.target.value});
