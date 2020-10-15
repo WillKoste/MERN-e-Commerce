@@ -61,7 +61,7 @@ router.post('/', auth, [check('name', 'Product name is required').not().isEmpty(
 	try {
 		let product = await pool.query(`INSERT INTO products (name, image, description, brand, category, price, countinstock, rating, numreviews, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, [name, image === '' || image === null ? imageDefault : image, description, brand, category, checkDefaultNum(price), checkDefaultNum(countinstock), checkDefaultNum(rating), checkDefaultNum(numreviews), req.user.id]);
 
-		res.status(201).json({success: true, msg: 'Product has been added!', product: product.rows});
+		res.status(201).json({success: true, msg: 'Product has been added!', product: product.rows[0]});
 	} catch (err) {
 		console.error(err);
 		res.status(400).json({success: false, msg: 'Bad request, please try again'});

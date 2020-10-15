@@ -23,8 +23,13 @@ const ShippingScreen = ({history, savePaymentInfo}) => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		savePaymentInfo(paymentMethod);
-		history.push('/placeorder');
+
+		if (paymentMethod === '') {
+			alert('Please select your payment method.');
+		} else {
+			savePaymentInfo(paymentMethod);
+			history.push('/placeorder');
+		}
 	};
 
 	return (
@@ -44,7 +49,7 @@ const ShippingScreen = ({history, savePaymentInfo}) => {
 						<Form.Check type='radio' label='Bitcoin' name='paymentMethod' id='Bitcoin' value='Bitcoin' onChange={onChange}></Form.Check>
 					</Col>
 					<Col className='mb-2'>
-						<Form.Check type='radio' label='WesternUnion' name='paymentMethod' id='WesternUnion' value='WesternUnion' onChange={onChange}></Form.Check>
+						<Form.Check type='radio' label='Western Union' name='paymentMethod' id='WesternUnion' value='WesternUnion' onChange={onChange}></Form.Check>
 					</Col>
 				</FormGroup>
 				<Button className='py-2 mt-2' type='submit' variant='primary'>
