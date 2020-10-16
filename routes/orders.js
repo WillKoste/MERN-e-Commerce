@@ -28,7 +28,7 @@ router.post('/:id', auth, [check('orderItems', 'Order Items are required to crea
 	}
 });
 
-//  @ Route			POST /api/orders
+//  @ Route			POST /api/orders/items
 //  @ Desc			Create orderitems
 //  @ Access		Private
 router.post('/items', auth, async (req, res) => {
@@ -44,7 +44,7 @@ router.post('/items', auth, async (req, res) => {
 	}
 });
 
-//  @ Route			POST /api/orders
+//  @ Route			POST /api/orders/address
 //  @ Desc			Create shippingaddress
 //  @ Access		Private
 router.post('/address', auth, async (req, res) => {
