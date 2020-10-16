@@ -5,8 +5,9 @@ import {Button, Row, Col, ListGroup, Image, Card, ListGroupItem} from 'react-boo
 import {Link} from 'react-router-dom';
 import CheckoutSteps from '../layout/CheckoutSteps';
 import CurrencyFormat from 'react-currency-format';
+import {createOrderItem, placeAnOrder, createShippingAddress} from '../../actions/order';
 
-const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice}}) => {
+const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice}, user, createOrderItem, createShippingAddress, placeAnOrder}) => {
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);
 	};
@@ -17,6 +18,11 @@ const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, ite
 	totalPrice = addDecimals(+itemsPrice + +shippingPrice + +taxPrice);
 
 	const placeOrder = (e) => {
+		createOrderItem();
+		createShippingAddress();
+
+		placeAnOrder();
+
 		alert('It worked :)');
 	};
 
@@ -116,11 +122,16 @@ const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, ite
 };
 
 PlaceOrderScreen.propTypes = {
-	cart: PropTypes.object.isRequired
+	cart: PropTypes.object.isRequired,
+	user: PropTypes.object.isRequired,
+	createOrderItem: PropTypes.func.isRequired,
+	createShippingAddress: PropTypes.func.isRequired,
+	placeAnOrder: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-	cart: state.cart
+	cart: state.cart,
+	user: state.user
 });
 
-export default connect(mapStateToProps)(PlaceOrderScreen);
+export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder})(PlaceOrderScreen);
