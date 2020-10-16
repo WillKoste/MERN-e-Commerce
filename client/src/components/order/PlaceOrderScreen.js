@@ -1,11 +1,10 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, Row, Col, ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import CheckoutSteps from '../layout/CheckoutSteps';
 import CurrencyFormat from 'react-currency-format';
-import cart from '../../reducers/cart';
 
 const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice}}) => {
 	const addDecimals = (num) => {
