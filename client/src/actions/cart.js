@@ -1,4 +1,4 @@
-import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO, SAVE_PAYMENT_INFO} from './types';
+import {CLEAR_CART, CART_ADD_ITEM, CART_REMOVE_ITEM, CART_ERROR, SAVE_SHIPPING_INFO, SAVE_PAYMENT_INFO} from './types';
 import axios from 'axios';
 
 export const addCart = (id, qty) => async (dispatch, getState) => {
@@ -68,4 +68,10 @@ export const savePaymentInfo = (info) => async (dispatch) => {
 	});
 
 	localStorage.setItem('paymentInfo', JSON.stringify(info));
+};
+
+export const clearCart = () => async (dispatch) => {
+	dispatch({
+		type: CLEAR_CART
+	});
 };

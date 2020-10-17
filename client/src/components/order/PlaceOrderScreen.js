@@ -1,16 +1,20 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, Row, Col, ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import CheckoutSteps from '../layout/CheckoutSteps';
 import CurrencyFormat from 'react-currency-format';
-import {createOrderItem, placeAnOrder, createShippingAddress} from '../../actions/order';
+import {createOrderItem, placeAnOrder, createShippingAddress, initTransNum} from '../../actions/order';
+import {clearCart} from '../../actions/cart';
+import {v4 as uuidv4} from 'uuid';
 
-const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice}, user, createOrderItem, createShippingAddress, placeAnOrder}) => {
+const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice}, user, clearCart, createOrderItem, createShippingAddress, placeAnOrder, initTransNum, history}) => {
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);
 	};
+
+	const theTransNum = uuidv4();
 
 	itemsPrice = addDecimals(cartItems.reduce((a, b) => a + b.price * b.qty, 0));
 	shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 10);
@@ -18,10 +22,17 @@ const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, ite
 	totalPrice = addDecimals(+itemsPrice + +shippingPrice + +taxPrice);
 
 	const placeOrder = (e) => {
-		createOrderItem();
+		cartItems.forEach((i) => {
+			createOrderItem(i.name, i.qty, i.image, i.price, i.product, theTransNum);
+		});
+
 		createShippingAddress();
 
 		placeAnOrder();
+
+		clearCart();
+
+		history.push('/ordercomplete');
 
 		alert('It worked :)');
 	};
@@ -126,7 +137,9 @@ PlaceOrderScreen.propTypes = {
 	user: PropTypes.object.isRequired,
 	createOrderItem: PropTypes.func.isRequired,
 	createShippingAddress: PropTypes.func.isRequired,
-	placeAnOrder: PropTypes.func.isRequired
+	placeAnOrder: PropTypes.func.isRequired,
+	initTransNum: PropTypes.func.isRequired,
+	clearCart: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -134,4 +147,4 @@ const mapStateToProps = (state) => ({
 	user: state.user
 });
 
-export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder})(PlaceOrderScreen);
+export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder, initTransNum, clearCart})(PlaceOrderScreen);
