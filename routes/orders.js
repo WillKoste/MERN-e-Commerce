@@ -11,6 +11,10 @@ router.post('/address', auth, async (req, res) => {
 	const {address, city, postal_code, country, user_id} = req.body;
 
 	try {
+		if (req.user.id !== user_id) {
+			return res.status(201).json({success: false, msg: 'User not authorized'});
+		}
+
 		const alreadyExists = await pool.query(`SELECT * FROM shippingaddresses WHERE user_id = $1`, [user_id]);
 
 		if (alreadyExists.rows[0]) {
@@ -36,10 +40,10 @@ router.post('/address', auth, async (req, res) => {
 //  @ Desc			Create orderitems
 //  @ Access		Private
 router.post('/items', auth, async (req, res) => {
-	const {name, qty, image, price, product_id, transaction_number, bing} = req.body;
+	const {name, qty, image, price, product_id, transaction_number} = req.body;
 
 	try {
-		let orderItem = await pool.query(`INSERT INTO orderitems (name, qty, image, price, product_id, transaction_number, bing) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING name, qty, product_id, transaction_number`, [name, qty, image, price, product_id, transaction_number, bing]);
+		let orderItem = await pool.query(`INSERT INTO orderitems (name, qty, image, price, product_id, transaction_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING name, qty, product_id, transaction_number`, [name, qty, image, price, product_id, transaction_number]);
 
 		res.status(201).json({success: true, msg: 'Order Item has been created.', orderItem: orderItem.rows[0]});
 	} catch (err) {
