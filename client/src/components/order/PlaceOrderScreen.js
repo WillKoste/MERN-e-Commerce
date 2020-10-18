@@ -1,11 +1,11 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, Row, Col, ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import CheckoutSteps from '../layout/CheckoutSteps';
 import CurrencyFormat from 'react-currency-format';
-import {createOrderItem, placeAnOrder, createShippingAddress, initTransNum} from '../../actions/order';
+import {createOrderItem, placeAnOrder, createShippingAddress} from '../../actions/order';
 import {clearCart} from '../../actions/cart';
 import {v4 as uuidv4} from 'uuid';
 
@@ -25,7 +25,6 @@ const PlaceOrderScreen = ({
 	createOrderItem,
 	createShippingAddress,
 	placeAnOrder,
-	initTransNum,
 	history
 }) => {
 	const addDecimals = (num) => {
@@ -48,7 +47,7 @@ const PlaceOrderScreen = ({
 
 		createShippingAddress(address, city, zipcode, country, user.userInfo.id);
 
-		// placeAnOrder();
+		placeAnOrder(order.transNum, order.addressId, paymentMethod, 'payment_result', taxPrice, shippingPrice, totalPrice, 'is_paid');
 
 		clearCart();
 
@@ -158,7 +157,6 @@ PlaceOrderScreen.propTypes = {
 	createOrderItem: PropTypes.func.isRequired,
 	createShippingAddress: PropTypes.func.isRequired,
 	placeAnOrder: PropTypes.func.isRequired,
-	initTransNum: PropTypes.func.isRequired,
 	clearCart: PropTypes.func.isRequired
 };
 
@@ -168,4 +166,4 @@ const mapStateToProps = (state) => ({
 	order: state.order
 });
 
-export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder, initTransNum, clearCart})(PlaceOrderScreen);
+export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder, clearCart})(PlaceOrderScreen);

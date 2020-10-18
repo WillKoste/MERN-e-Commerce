@@ -1,6 +1,5 @@
 import {ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL} from './types';
 import axios from 'axios';
-import {v4 as uuidv4} from 'uuid';
 
 export const createOrderItem = (name, qty, image, price, product_id, transaction_number) => async (dispatch) => {
 	const config = {
@@ -37,9 +36,11 @@ export const createShippingAddress = (address, city, postal_code, country, user_
 	try {
 		const res = await axios.post(`/api/orders/address`, body, config);
 
+		console.log(res.data);
+
 		dispatch({
 			type: SHIPPING_ADDRESS_CREATE_SUCCESS,
-			payload: res.data
+			payload: res.data.shippingAddress
 		});
 	} catch (err) {
 		dispatch({
@@ -49,17 +50,17 @@ export const createShippingAddress = (address, city, postal_code, country, user_
 	}
 };
 
-export const placeAnOrder = (userid, orderItemId, shippingAddressId, paymentMethod, paymentResult, taxPrice, shippingPrice, totalPrice, isPaid) => async (dispatch) => {
+export const placeAnOrder = (transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid) => async (dispatch) => {
 	const config = {
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	};
 
-	const body = JSON.stringify({orderItemId, shippingAddressId, paymentMethod, paymentResult, taxPrice, shippingPrice, totalPrice, isPaid});
+	const body = JSON.stringify({transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid});
 
 	try {
-		const res = await axios.post(`/api/orders/${userid}`);
+		const res = await axios.post(`/api/orders/place`, body, config);
 
 		dispatch({
 			type: ORDER_CREATE_SUCCESS,
@@ -72,10 +73,4 @@ export const placeAnOrder = (userid, orderItemId, shippingAddressId, paymentMeth
 			payload: err
 		});
 	}
-};
-
-export const initTransNum = () => {
-	const theOneNum = uuidv4();
-
-	return theOneNum;
 };

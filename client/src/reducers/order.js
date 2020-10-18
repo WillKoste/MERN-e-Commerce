@@ -1,7 +1,8 @@
 import {SHIPPING_ADDRESS_CREATE_FAIL, SHIPPING_ADDRESS_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS} from '../actions/types';
 
 const initialState = {
-	transNum: null
+	transNum: null,
+	addressId: null
 };
 
 export default function (state = initialState, action) {
@@ -18,7 +19,8 @@ export default function (state = initialState, action) {
 			};
 		case SHIPPING_ADDRESS_CREATE_SUCCESS:
 			return {
-				...state
+				...state,
+				addressId: payload.id
 			};
 		case SHIPPING_ADDRESS_CREATE_FAIL:
 			return {

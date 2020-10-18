@@ -18,11 +18,11 @@ router.post('/address', auth, async (req, res) => {
 		const alreadyExists = await pool.query(`SELECT * FROM shippingaddresses WHERE user_id = $1`, [user_id]);
 
 		if (alreadyExists.rows[0]) {
-			let updateAddress = await pool.query(`UPDATE shippingaddresses SET address = $1, city = $2, postal_code = $3, country = $4, user_id = $5 WHERE user_id = $6 RETURNING address, postal_code, country, user_id`, [address, city, postal_code, country, user_id, user_id]);
+			let updateAddress = await pool.query(`UPDATE shippingaddresses SET address = $1, city = $2, postal_code = $3, country = $4, user_id = $5 WHERE user_id = $6 RETURNING id, address, postal_code, country, user_id`, [address, city, postal_code, country, user_id, user_id]);
 
 			res.json({success: true, msg: 'Shipping Address has been updated.', shippingAddress: updateAddress.rows[0]});
 		} else {
-			let shippingAddress = await pool.query(`INSERT INTO shippingaddresses (address, city, postal_code, country, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING address, postal_code, country, user_id`, [address, city, postal_code, country, user_id]);
+			let shippingAddress = await pool.query(`INSERT INTO shippingaddresses (address, city, postal_code, country, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, address, postal_code, country, user_id`, [address, city, postal_code, country, user_id]);
 
 			res.status(201).json({success: true, msg: 'Shipping Address has been created.', shippingAddress: shippingAddress.rows[0]});
 		}
@@ -57,17 +57,17 @@ router.post('/items', auth, async (req, res) => {
 //  @ Route			POST /api/orders/:id 		(`/api/orders/${req.user.id}`)
 //  @ Desc			Create order
 //  @ Access		Private
-router.post('/:id', auth, [check('orderItems', 'Order Items are required to create an order').not().isEmpty()], async (req, res) => {
+router.post('/place', auth, [check('transaction_number', 'Order Items are required to create an order').not().isEmpty()], async (req, res) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
 		return res.status(400).json({success: false, errors: errors.array()});
 	}
 
-	const {orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice} = req.body;
+	const {transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid} = req.body;
 
 	try {
-		const order = await pool.query(`INSERT INTO orders (orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, orderItems, shippingAddress`, [orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice]);
+		const order = await pool.query(`INSERT INTO orders (transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, transaction_number, shipping_address_id`, [transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid]);
 
 		res.status(201).json({success: true, msg: 'Order has been created.', order: order.rows[0]});
 	} catch (err) {
