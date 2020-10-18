@@ -9,7 +9,25 @@ import {createOrderItem, placeAnOrder, createShippingAddress, initTransNum} from
 import {clearCart} from '../../actions/cart';
 import {v4 as uuidv4} from 'uuid';
 
-const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice}, user, clearCart, createOrderItem, createShippingAddress, placeAnOrder, initTransNum, history}) => {
+const PlaceOrderScreen = ({
+	order,
+	cart: {
+		cartItems,
+		shippingAddress: {address, city, zipcode, country},
+		paymentMethod,
+		itemsPrice,
+		shippingPrice,
+		taxPrice,
+		totalPrice
+	},
+	user,
+	clearCart,
+	createOrderItem,
+	createShippingAddress,
+	placeAnOrder,
+	initTransNum,
+	history
+}) => {
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);
 	};
@@ -21,14 +39,16 @@ const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, ite
 	taxPrice = addDecimals(itemsPrice * 0.15);
 	totalPrice = addDecimals(+itemsPrice + +shippingPrice + +taxPrice);
 
-	const placeOrder = (e) => {
+	const placeOrder = () => {
 		cartItems.forEach((i) => {
 			createOrderItem(i.name, i.qty, i.image, i.price, i.product, theTransNum);
+
+			return (order.transNum = theTransNum);
 		});
 
-		createShippingAddress();
+		createShippingAddress(address, city, zipcode, country, user.userInfo.id);
 
-		placeAnOrder();
+		// placeAnOrder();
 
 		clearCart();
 
@@ -46,7 +66,7 @@ const PlaceOrderScreen = ({cart: {cartItems, shippingAddress, paymentMethod, ite
 						<ListGroupItem>
 							<h2>Shipping</h2>
 							<p>
-								<strong>Address:</strong> {shippingAddress.address}, {shippingAddress.city} {shippingAddress.zipcode}, {shippingAddress.country}
+								<strong>Address:</strong> {address}, {city} {zipcode}, {country}
 							</p>
 						</ListGroupItem>
 						<ListGroupItem>
@@ -144,7 +164,8 @@ PlaceOrderScreen.propTypes = {
 
 const mapStateToProps = (state) => ({
 	cart: state.cart,
-	user: state.user
+	user: state.user,
+	order: state.order
 });
 
 export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder, initTransNum, clearCart})(PlaceOrderScreen);
