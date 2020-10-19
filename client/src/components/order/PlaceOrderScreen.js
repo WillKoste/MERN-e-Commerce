@@ -1,11 +1,11 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, Row, Col, ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import CheckoutSteps from '../layout/CheckoutSteps';
 import CurrencyFormat from 'react-currency-format';
-import {createOrderItem, placeAnOrder, createShippingAddress} from '../../actions/order';
+import {createOrderItem, placeAnOrder} from '../../actions/order';
 import {clearCart} from '../../actions/cart';
 import {v4 as uuidv4} from 'uuid';
 
@@ -23,10 +23,15 @@ const PlaceOrderScreen = ({
 	user,
 	clearCart,
 	createOrderItem,
-	createShippingAddress,
 	placeAnOrder,
 	history
 }) => {
+	useEffect(() => {
+		if (order.success) {
+			history.push('/ordercomplete');
+		}
+	}, [history, order.success]);
+
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);
 	};
@@ -45,15 +50,9 @@ const PlaceOrderScreen = ({
 			return (order.transNum = theTransNum);
 		});
 
-		createShippingAddress(address, city, zipcode, country, user.userInfo.id);
-
-		// placeAnOrder(order.transNum, order.addressId, paymentMethod, 'payment_result', taxPrice, shippingPrice, totalPrice, 'is_paid');
+		placeAnOrder(order.transNum, order.addressId, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice);
 
 		clearCart();
-
-		history.push('/ordercomplete');
-
-		alert('It worked :)');
 	};
 
 	return (
@@ -155,7 +154,6 @@ PlaceOrderScreen.propTypes = {
 	cart: PropTypes.object.isRequired,
 	user: PropTypes.object.isRequired,
 	createOrderItem: PropTypes.func.isRequired,
-	createShippingAddress: PropTypes.func.isRequired,
 	placeAnOrder: PropTypes.func.isRequired,
 	clearCart: PropTypes.func.isRequired
 };
@@ -166,4 +164,4 @@ const mapStateToProps = (state) => ({
 	order: state.order
 });
 
-export default connect(mapStateToProps, {createOrderItem, createShippingAddress, placeAnOrder, clearCart})(PlaceOrderScreen);
+export default connect(mapStateToProps, {createOrderItem, placeAnOrder, clearCart})(PlaceOrderScreen);

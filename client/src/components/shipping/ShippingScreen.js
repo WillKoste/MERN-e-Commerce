@@ -4,9 +4,10 @@ import {connect} from 'react-redux';
 import {Form, Button, FormGroup, FormControl, FormLabel} from 'react-bootstrap';
 import FormContainer from '../layout/FormContainer';
 import {saveShippingInfo} from '../../actions/cart';
+import {createShippingAddress} from '../../actions/order';
 import CheckoutSteps from '../layout/CheckoutSteps';
 
-const ShippingScreen = ({cart: {shippingAddress}, history, match, saveShippingInfo}) => {
+const ShippingScreen = ({user, cart: {shippingAddress}, history, match, saveShippingInfo, createShippingAddress}) => {
 	const prodID = match.params.id;
 
 	const [formData, setFormData] = useState({
@@ -31,6 +32,7 @@ const ShippingScreen = ({cart: {shippingAddress}, history, match, saveShippingIn
 	const onSubmit = (e) => {
 		e.preventDefault();
 		saveShippingInfo({address, city, zipcode, country});
+		createShippingAddress(address, city, zipcode, country, user.userInfo.id);
 		history.push('/payment');
 	};
 
@@ -66,7 +68,8 @@ const ShippingScreen = ({cart: {shippingAddress}, history, match, saveShippingIn
 ShippingScreen.propTypes = {
 	user: PropTypes.object.isRequired,
 	cart: PropTypes.object.isRequired,
-	saveShippingInfo: PropTypes.func.isRequired
+	saveShippingInfo: PropTypes.func.isRequired,
+	createShippingAddress: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -74,4 +77,4 @@ const mapStateToProps = (state) => ({
 	cart: state.cart
 });
 
-export default connect(mapStateToProps, {saveShippingInfo})(ShippingScreen);
+export default connect(mapStateToProps, {saveShippingInfo, createShippingAddress})(ShippingScreen);

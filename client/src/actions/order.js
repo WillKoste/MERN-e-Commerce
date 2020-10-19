@@ -50,14 +50,14 @@ export const createShippingAddress = (address, city, postal_code, country, user_
 	}
 };
 
-export const placeAnOrder = (transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid) => async (dispatch) => {
+export const placeAnOrder = (transaction_number, shipping_address_id, payment_method, items_price, tax_price, shipping_price, total_price) => async (dispatch) => {
 	const config = {
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	};
 
-	const body = JSON.stringify({transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid});
+	const body = JSON.stringify({transaction_number, shipping_address_id, payment_method, items_price, tax_price, shipping_price, total_price});
 
 	try {
 		const res = await axios.post(`/api/orders/place`, body, config);

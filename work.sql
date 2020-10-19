@@ -82,18 +82,46 @@ create table orderitems (
 
 
 
--- // CREATE ORDER QUERY QUERIES -- //
+-- CREATE SHIPPING ADDRESS QUERY --
+insert into shippingaddresses (address, city, postal_code, country, user_id) values ('1010 Tenten st', 'Uganda', '45621', 'Idaho', 5)
+
+select * from shippingaddresses s 
+
+
+
+-- CREATE ORDER ITEM QUERY --
+insert into orderitems (name, qty, image, price, product_id) values ('2006 Keyblade BoatSport', 3, '/images/boat.jpg', 15000.99, 3);
+
+select * from orderitems o;
+
 
 -- SELECTING SHIPPING INFO FOR CREATE ORDER QUERY --
-select * from users u 
+select u.id users_id, u.name, s.user_id shipping_address_user_id, s.address, s.id shippingaddress_id from users u 
 	inner join shippingaddresses s 
-	on u.id = s.user_id;
+	on u.id = s.user_id
+	inner join orders o2 
+	on s.id = o2.shipping_address_id 
 
 -- SELECT ORDERITEMS INFO FOR CREATE ORDER QUERY --
-select p.id products_id, p."name" product_name, p.price, o.id order_item_id, o."name" order_item_name, o.product_id order_item_product_id from products p 
+select p.id products_id, p."name" product_name, p.price, o.transaction_number, o.id order_item_id from products p 
 	inner join orderitems o 
-	on p.id = o.product_id;
+	on p.id = o.product_id
+	inner join orders o2 
+	on o2.id = o.transaction_number 
+	where transaction_number = '6a781402-659d-4632-b531-410a8372ce37'
+	
+	
+-- SELECT ORDER ITEMS BY TRANSACTION NUMBER IN ORDER QUERY --
+select * from orderitems o 
+	inner join orders o2 
+	on o.transaction_number = o2.transaction_number
+	where o.transaction_number = '75c4b7ab-0752-4702-b8a9-80c80e69575c' 
+--	and o.name ilike '%s%'
 
+select * from users u 
+	inner join shippingaddresses s 
+	on s.user_id = u.id
+	where s.id = 9
 
 
 

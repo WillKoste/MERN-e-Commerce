@@ -54,7 +54,7 @@ router.post('/items', auth, async (req, res) => {
 
 // Going to need to create an advanced SQL query with inner join to gather the data for
 
-//  @ Route			POST /api/orders/:id 		(`/api/orders/${req.user.id}`)
+//  @ Route			POST /api/place 		(`/api/orders/${req.user.id}`)
 //  @ Desc			Create order
 //  @ Access		Private
 router.post('/place', auth, [check('transaction_number', 'Order Items are required to create an order').not().isEmpty()], async (req, res) => {
@@ -64,12 +64,24 @@ router.post('/place', auth, [check('transaction_number', 'Order Items are requir
 		return res.status(400).json({success: false, errors: errors.array()});
 	}
 
-	const {transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid} = req.body;
+	const {transaction_number, shipping_address_id, payment_method, items_price, tax_price, shipping_price, total_price} = req.body;
 
 	try {
-		const order = await pool.query(`INSERT INTO orders (transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, transaction_number, shipping_address_id`, [transaction_number, shipping_address_id, payment_method, payment_result, tax_price, shipping_price, total_price, is_paid]);
+		const order = await pool.query(`INSERT INTO orders (transaction_number, shipping_address_id, payment_method, items_price, tax_price, shipping_price, total_price) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, transaction_number, shipping_address_id`, [transaction_number, shipping_address_id, payment_method, items_price, tax_price, shipping_price, total_price]);
 
 		res.status(201).json({success: true, msg: 'Order has been created.', order: order.rows[0]});
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Server Error');
+	}
+});
+
+//  @ Route			GET /api/orders/getorderitems
+//  @ Desc			Get order items based on transaction number
+//  @ Access		Private
+router.get('/getorderitems/:transnum', auth, async (req, res) => {
+	try {
+		const orderItems = await pool.query(``);
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Server Error');
