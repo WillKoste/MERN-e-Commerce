@@ -5,7 +5,7 @@ import {Nav, Navbar, Container, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {logout} from '../../actions/user';
 
-const Header = ({user: {isAuthenticated, loading, userInfo}, logout}) => {
+const Header = ({user: {isAuthenticated, userInfo}, logout}) => {
 	const onClick = () => {
 		logout();
 	};

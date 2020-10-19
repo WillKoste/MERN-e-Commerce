@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-const OrderCompleteScreen = () => {
+const OrderCompleteScreen = ({order}) => {
 	return (
 		<div>
 			<h1>You Placed An Order! :D</h1>
@@ -12,4 +14,12 @@ const OrderCompleteScreen = () => {
 	);
 };
 
-export default OrderCompleteScreen;
+OrderCompleteScreen.propTypes = {
+	order: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+	order: state.order
+});
+
+export default connect(mapStateToProps)(OrderCompleteScreen);

@@ -2,7 +2,8 @@ import {SHIPPING_ADDRESS_CREATE_FAIL, SHIPPING_ADDRESS_CREATE_SUCCESS, ORDER_ITE
 
 const initialState = {
 	transNum: null,
-	addressId: null
+	addressId: null,
+	loading: true
 };
 
 export default function (state = initialState, action) {
@@ -11,28 +12,34 @@ export default function (state = initialState, action) {
 	switch (type) {
 		case ORDER_ITEM_CREATE_SUCCESS:
 			return {
-				...state
+				...state,
+				loading: false
 			};
 		case ORDER_ITEM_CREATE_FAIL:
 			return {
-				...state
+				...state,
+				loading: false
 			};
 		case SHIPPING_ADDRESS_CREATE_SUCCESS:
 			return {
 				...state,
+				loading: false,
 				addressId: payload.id
 			};
 		case SHIPPING_ADDRESS_CREATE_FAIL:
 			return {
-				...state
+				...state,
+				loading: false
 			};
 		case ORDER_CREATE_SUCCESS:
 			return {
-				...state
+				...state,
+				loading: false
 			};
 		case ORDER_CREATE_FAIL:
 			return {
-				...state
+				...state,
+				loading: false
 			};
 		default:
 			return state;
