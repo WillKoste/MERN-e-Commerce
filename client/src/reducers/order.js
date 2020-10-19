@@ -21,7 +21,6 @@ export default function (state = initialState, action) {
 				loading: false
 			};
 		case SHIPPING_ADDRESS_CREATE_SUCCESS:
-			console.log(payload.id, 789);
 			return {
 				...state,
 				loading: false,
