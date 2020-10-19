@@ -47,7 +47,7 @@ const PlaceOrderScreen = ({
 
 		createShippingAddress(address, city, zipcode, country, user.userInfo.id);
 
-		placeAnOrder(order.transNum, order.addressId, paymentMethod, 'payment_result', taxPrice, shippingPrice, totalPrice, 'is_paid');
+		// placeAnOrder(order.transNum, order.addressId, paymentMethod, 'payment_result', taxPrice, shippingPrice, totalPrice, 'is_paid');
 
 		clearCart();
 
