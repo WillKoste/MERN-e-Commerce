@@ -1,4 +1,4 @@
-import {ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL} from './types';
+import {ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL, RESET_ORDER_SUCCESS} from './types';
 import axios from 'axios';
 
 export const createOrderItem = (name, qty, image, price, product_id, transaction_number) => async (dispatch) => {
@@ -35,9 +35,6 @@ export const createShippingAddress = (address, city, postal_code, country, user_
 
 	try {
 		const res = await axios.post(`/api/orders/address`, body, config);
-
-		console.log(res.data);
-
 		dispatch({
 			type: SHIPPING_ADDRESS_CREATE_SUCCESS,
 			payload: res.data.shippingAddress
@@ -72,5 +69,19 @@ export const placeAnOrder = (transaction_number, shipping_address_id, payment_me
 			type: ORDER_CREATE_FAIL,
 			payload: err
 		});
+	}
+};
+
+export const resetSuccess = () => async (dispatch) => {
+	dispatch({
+		type: RESET_ORDER_SUCCESS
+	});
+};
+
+export const getOrderInfo = (transNum) => async (dispatch) => {
+	try {
+		const res = await axios.get(`/api/orders/${transNum}`);
+	} catch (err) {
+		console.error(err);
 	}
 };

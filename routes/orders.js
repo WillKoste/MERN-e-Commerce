@@ -94,10 +94,7 @@ router.get('/getorderitems/:transnum', auth, async (req, res) => {
 router.get('/:transnum', auth, async (req, res) => {
 	try {
 		const order = await pool.query(`SELECT * FROM orders WHERE transaction_number ='${req.params.transnum}' `);
-		const userIdCheck = await pool.query(`select u.id users_id, u.name, u.isadmin, s.user_id shipping_address_user_id, s.id shippingaddress_id, o2.transaction_number from users u inner join shippingaddresses s on u.id = s.user_id inner join orders o2 on s.id = o2.shipping_address_id WHERE o2.transaction_number = '${req.params.transnum}'`);
-
-		console.log(userIdCheck.rows[0]);
-		console.error(req.user.id);
+		const userIdCheck = await pool.query(`SELECT u.id users_id, u.name, u.isadmin, s.user_id shipping_address_user_id, s.id shippingaddress_id, s.address, o2.transaction_number FROM users u inner join shippingaddresses s on u.id = s.user_id inner join orders o2 on s.id = o2.shipping_address_id WHERE o2.transaction_number = '${req.params.transnum}'`);
 
 		if (req.user.id !== userIdCheck.rows[0].users_id && req.user.id !== userIdCheck.rows[0].shipping_address_user_id) {
 			return res.status(401).json({success: false, msg: 'Authorization Denied'});
@@ -107,7 +104,7 @@ router.get('/:transnum', auth, async (req, res) => {
 			return res.status(404).json({success: false, msg: `No order found with the transaction number of ${req.params.transnum}`});
 		}
 
-		res.json({success: true, order: order.rows[0]});
+		res.json({success: true, order: order.rows[0], otherInfo: userIdCheck.rows[0]});
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Server Error');
