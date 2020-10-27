@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const authorizeRole = require('../middleware/authorizeRole');
 const {check, validationResult} = require('express-validator');
 const pool = require('../config/db');
 
@@ -81,7 +82,13 @@ router.post('/place', auth, [check('transaction_number', 'Order Items are requir
 //  @ Access		Private
 router.get('/getorderitems/:transnum', auth, async (req, res) => {
 	try {
-		const orderItems = await pool.query(``);
+		const orderItems = await pool.query(`select o.id, o."name", o.price, o.product_id, o.transaction_number from orderitems o inner join orders o2 on o.transaction_number = o2.transaction_number where o2.transaction_number = $1`, [req.params.transnum]);
+
+		if (orderItems.rows.length === 0) {
+			return res.status(404).json({success: false, msg: `No order items found with the transaction number of ${req.params.transnum}`});
+		}
+
+		res.json({success: true, count: orderItems.rowCount, orderItems: orderItems.rows});
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Server Error');
@@ -111,4 +118,21 @@ router.get('/:transnum', auth, async (req, res) => {
 	}
 });
 
+//  @ Route			GET /api/orders/:transnum
+//  @ Desc			Get order by transaction number
+//  @ Access		Private, admin only
+router.get('/', auth, authorizeRole, async (req, res) => {
+	try {
+		const orders = await pool.query(`SELECT * FROM orders`);
+
+		if (orders.rowCount === 0) {
+			return res.json({success: true, msg: 'No orders in database'});
+		}
+
+		res.json({success: true, count: orders.rowCount, orders: orders.rows});
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Server Error');
+	}
+});
 module.exports = router;
