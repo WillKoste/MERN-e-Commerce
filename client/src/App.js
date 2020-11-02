@@ -20,6 +20,7 @@ import ShippingScreen from './components/shipping/ShippingScreen';
 import PaymentScreen from './components/payment/PaymentScreen';
 import PlaceOrderScreen from './components/order/PlaceOrderScreen';
 import OrderCompleteScreen from './components/order/OrderCompleteScreen';
+import OrderScreen from './components/order/OrderScreen';
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -48,6 +49,7 @@ const App = () => {
 								<PrivateRoute path='/payment' component={PaymentScreen} />
 								<PrivateRoute path='/placeorder' component={PlaceOrderScreen} />
 								<PrivateRoute path='/ordercomplete' component={OrderCompleteScreen} />
+								<PrivateRoute path='/orderItem/:id' component={OrderScreen} />
 							</Switch>
 						</Container>
 					</main>
