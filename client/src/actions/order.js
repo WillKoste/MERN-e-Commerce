@@ -1,4 +1,4 @@
-import {ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL, RESET_ORDER_SUCCESS, ORDER_INFO_SUCCESS, ORDER_INFO_FAIL} from './types';
+import {ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_SUCCESS, SHIPPING_ADDRESS_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL, RESET_ORDER_SUCCESS, ORDER_INFO_SUCCESS, ORDER_INFO_FAIL, ORDER_ITEMS_FETCH_SUCCESS, ORDER_ITEMS_FETCH_FAIL} from './types';
 import axios from 'axios';
 
 export const createOrderItem = (name, qty, image, price, product_id, transaction_number) => async (dispatch) => {
@@ -82,8 +82,6 @@ export const getOrderInfo = (transNum) => async (dispatch) => {
 	try {
 		const res = await axios.get(`/api/orders/${transNum}`);
 
-		console.log(res.data);
-
 		dispatch({
 			type: ORDER_INFO_SUCCESS,
 			payload: res.data
@@ -92,6 +90,24 @@ export const getOrderInfo = (transNum) => async (dispatch) => {
 		console.error(err);
 		dispatch({
 			type: ORDER_INFO_FAIL
+		});
+	}
+};
+
+export const fetchOrderItems = (transNum) => async (dispatch) => {
+	try {
+		const res = await axios.get(`/api/orders/getorderitems/${transNum}`);
+
+		console.log(res.data);
+
+		dispatch({
+			type: ORDER_ITEMS_FETCH_SUCCESS,
+			payload: res.data
+		});
+	} catch (err) {
+		console.error(err);
+		dispatch({
+			type: ORDER_ITEMS_FETCH_FAIL
 		});
 	}
 };

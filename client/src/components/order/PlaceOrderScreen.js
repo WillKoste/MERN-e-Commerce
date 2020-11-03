@@ -28,7 +28,7 @@ const PlaceOrderScreen = ({
 }) => {
 	useEffect(() => {
 		if (order.success) {
-			history.push('/ordercomplete');
+			history.push(`/orderitem/${order.transNum}`);
 		}
 	}, [history, order.success]);
 

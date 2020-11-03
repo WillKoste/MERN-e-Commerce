@@ -1,11 +1,11 @@
-import {SHIPPING_ADDRESS_CREATE_FAIL, SHIPPING_ADDRESS_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, RESET_ORDER_SUCCESS, ORDER_INFO_SUCCESS, ORDER_INFO_FAIL} from '../actions/types';
+import {SHIPPING_ADDRESS_CREATE_FAIL, SHIPPING_ADDRESS_CREATE_SUCCESS, ORDER_ITEM_CREATE_FAIL, ORDER_ITEM_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_CREATE_SUCCESS, RESET_ORDER_SUCCESS, ORDER_INFO_SUCCESS, ORDER_INFO_FAIL, ORDER_ITEMS_FETCH_SUCCESS, ORDER_ITEMS_FETCH_FAIL, LOGOUT_SUCCESS} from '../actions/types';
 
 const initialState = {
-	transNum: null,
 	addressId: null,
 	loading: true,
 	orderItem: {},
-	orderInfo: {}
+	otherInfo: {},
+	orderItems: []
 };
 
 export default function (state = initialState, action) {
@@ -58,11 +58,29 @@ export default function (state = initialState, action) {
 				loading: false,
 				orderItem: {}
 			};
+		case ORDER_ITEMS_FETCH_SUCCESS:
+			return {
+				...state,
+				orderItems: payload.orderItems
+			};
+		case ORDER_ITEMS_FETCH_FAIL:
+			return {
+				...state,
+				orderItems: []
+			};
 		case RESET_ORDER_SUCCESS:
 			return {
 				...state,
 				loading: false,
 				success: null
+			};
+		case LOGOUT_SUCCESS:
+			return {
+				loading: false,
+				addressId: null,
+				orderItem: {},
+				otherInfo: {},
+				orderItems: []
 			};
 		default:
 			return state;
