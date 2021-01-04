@@ -37,6 +37,7 @@ const PlaceOrderScreen = ({
 	};
 
 	const theTransNum = uuidv4();
+	console.log(theTransNum);
 
 	itemsPrice = addDecimals(cartItems.reduce((a, b) => a + b.price * b.qty, 0));
 	shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 10);
